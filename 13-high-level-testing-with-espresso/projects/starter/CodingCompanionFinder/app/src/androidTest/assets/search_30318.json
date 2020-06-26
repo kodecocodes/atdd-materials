@@ -1,0 +1,145 @@
+{
+  "animals": [
+    {
+      "id": 44543909,
+      "organization_id": "GA604",
+      "url": "https://www.petfinder.com/dog/joy-44543909/ga/loganville/five-freedoms-farm-ga604/?referrer_id=22998841-2049-4c0e-a9f4-cdc9f8aebd64",
+      "type": "Dog",
+      "species": "Dog",
+      "breeds": {
+        "primary": "Shih Tzu",
+        "secondary": null,
+        "mixed": false,
+        "unknown": false
+      },
+      "colors": {
+        "primary": "White / Cream",
+        "secondary": null,
+        "tertiary": null
+      },
+      "age": "Senior",
+      "gender": "Female",
+      "size": "Small",
+      "coat": "Medium",
+      "attributes": {
+        "spayed_neutered": true,
+        "house_trained": false,
+        "declawed": null,
+        "special_needs": true,
+        "shots_current": true
+      },
+      "environment": {
+        "children": true,
+        "dogs": true,
+        "cats": true
+      },
+      "tags": [
+        "loving",
+        "docile"
+      ],
+      "name": "Joy",
+      "description": "Joy is a docile, quiet lapdog who just wants to be held and loved! She came from a neglect situation...",
+      "photos": [
+      ],
+      "status": "adoptable",
+      "published_at": "2019-04-25T13:45:51+0000",
+      "contact": {
+        "email": "fivefreedomsfarm@gmail.com",
+        "phone": null,
+        "address": {
+          "address1": "PO Box 303",
+          "address2": null,
+          "city": "Loganville",
+          "state": "GA",
+          "postcode": "30052",
+          "country": "US"
+        }
+      },
+      "_links": {
+        "self": {
+          "href": "/v2/animals/44543909"
+        },
+        "type": {
+          "href": "/v2/types/dog"
+        },
+        "organization": {
+          "href": "/v2/organizations/ga604"
+        }
+      }
+    },
+    {
+      "id": 44543882,
+      "organization_id": "GA913",
+      "url": "https://www.petfinder.com/cat/kevin-44543882/ga/rome/public-animal-welfare-services-ga913/?referrer_id=22998841-2049-4c0e-a9f4-cdc9f8aebd64",
+      "type": "Cat",
+      "species": "Cat",
+      "breeds": {
+        "primary": "Domestic Short Hair",
+        "secondary": null,
+        "mixed": false,
+        "unknown": false
+      },
+      "colors": {
+        "primary": null,
+        "secondary": null,
+        "tertiary": null
+      },
+      "age": "Young",
+      "gender": "Female",
+      "size": "Medium",
+      "coat": null,
+      "attributes": {
+        "spayed_neutered": false,
+        "house_trained": false,
+        "declawed": false,
+        "special_needs": false,
+        "shots_current": false
+      },
+      "environment": {
+        "children": null,
+        "dogs": null,
+        "cats": null
+      },
+      "tags": [],
+      "name": "KEVIN",
+      "description": null,
+      "photos": [],
+      "status": "adoptable",
+      "published_at": "2019-04-25T13:23:40+0000",
+      "contact": {
+        "email": "adoptions@gahomelesspets.com",
+        "phone": "(706) 236-4537",
+        "address": {
+          "address1": "99 North Ave",
+          "address2": null,
+          "city": "Rome",
+          "state": "GA",
+          "postcode": "30161",
+          "country": "US"
+        }
+      },
+      "_links": {
+        "self": {
+          "href": "/v2/animals/44543882"
+        },
+        "type": {
+          "href": "/v2/types/cat"
+        },
+        "organization": {
+          "href": "/v2/organizations/ga913"
+        }
+      }
+    }
+  ],
+  "pagination": {
+    "count_per_page": 20,
+    "total_count": 230898,
+    "current_page": 1,
+    "total_pages": 11545,
+    "_links": {
+      "next": {
+        "href": "/v2/animals?location=30318&page=2"
+      }
+    }
+  }
+}

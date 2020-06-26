@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2019 Razeware LLC
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in
+  ~ all copies or substantial portions of the Software.
+  ~
+  ~ Notwithstanding the foregoing, you may not use, copy, modify, merge, publish,
+  ~ distribute, sublicense, create a derivative work, and/or sell copies of the
+  ~ Software in any work that is designed, intended, or marketed for pedagogical or
+  ~ instructional purposes related to programming, coding, application development,
+  ~ or information technology.  Permission for such use, copying, modification,
+  ~ merger, publication, distribution, sublicensing, creation of derivative works,
+  ~ or sale is expressly withheld.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  ~ THE SOFTWARE.
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".randomcompanion.RandomCompanionFragment">
+
+  <androidx.appcompat.widget.AppCompatTextView
+    android:id="@+id/title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="5dp"
+    android:text="@string/featured_pet"
+    android:textSize="24sp"
+    android:textStyle="bold"
+    app:layout_constraintBottom_toTopOf="@id/petCarouselView"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <com.synnapps.carouselview.CarouselView
+    android:id="@+id/petCarouselView"
+    android:layout_width="0dp"
+    android:layout_height="200dp"
+    android:layout_marginBottom="5dp"
+    app:fillColor="#FFFFFFFF"
+    app:layout_constraintBottom_toTopOf="@id/petName"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/title"
+    app:layout_constraintWidth_percent=".6"
+    app:pageColor="#00000000"
+    app:radius="6dp"
+    app:slideInterval="3000"
+    app:strokeColor="#FF777777"
+    app:strokeWidth="1dp" />
+
+  <androidx.appcompat.widget.AppCompatTextView
+    android:id="@+id/petName"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/name_placeholder"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    app:layout_constraintBottom_toTopOf="@id/breed"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/petCarouselView" />
+
+  <androidx.appcompat.widget.AppCompatTextView
+    android:id="@+id/breed"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/breed_placeholder"
+    app:layout_constraintBottom_toTopOf="@+id/age"
+    app:layout_constraintEnd_toStartOf="@id/city"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/petName" />
+
+  <androidx.appcompat.widget.AppCompatTextView
+    android:id="@+id/city"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/city_placeholder"
+    app:layout_constraintBottom_toBottomOf="@id/breed"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@+id/breed"
+    app:layout_constraintTop_toTopOf="@+id/breed" />
+
+  <androidx.appcompat.widget.AppCompatTextView
+    android:id="@+id/age"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/age_placeholder"
+    app:layout_constraintBottom_toTopOf="@id/meetTitlePlaceholder"
+    app:layout_constraintEnd_toStartOf="@id/sex"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/breed" />
+
+  <androidx.appcompat.widget.AppCompatTextView
+    android:id="@+id/sex"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/sex_placeholder"
+    app:layout_constraintBottom_toBottomOf="@id/age"
+    app:layout_constraintEnd_toStartOf="@id/size"
+    app:layout_constraintStart_toEndOf="@id/age"
+    app:layout_constraintTop_toTopOf="@id/age" />
+
+  <androidx.appcompat.widget.AppCompatTextView
+    android:id="@+id/size"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/size_placeholder"
+    app:layout_constraintBottom_toBottomOf="@id/age"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/sex"
+    app:layout_constraintTop_toTopOf="@id/age" />
+
+  <androidx.appcompat.widget.AppCompatTextView
+    android:id="@+id/meetTitlePlaceholder"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/meet_title_placeholder"
+    android:textStyle="bold"
+    app:layout_constraintBottom_toTopOf="@+id/descriptionScroll"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/age" />
+
+  <androidx.core.widget.NestedScrollView
+    android:id="@+id/descriptionScroll"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:paddingStart="30dp"
+    android:paddingEnd="30dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHeight_percent=".25"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintVertical_bias="1.0">
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/description"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/description_placeholder" />
+  </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

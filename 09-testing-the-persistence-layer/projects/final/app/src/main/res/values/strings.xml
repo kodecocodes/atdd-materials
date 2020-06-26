@@ -1,0 +1,8 @@
+<resources>
+  <string name="app_name">Wishlist</string>
+  <string name="add_list">Add list</string>
+  <string name="title_list_person">Who is this list for?</string>
+  <string name="save">Save</string>
+  <string name="add_wish">Add Wish</string>
+  <string name="title_add_wish">What are they wishing for?</string>
+</resources>

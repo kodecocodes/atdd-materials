@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Coding Companion Finder</string>
+
+    <string name="featured_pet">Featured Companion</string>
+    <string name="find_pet">Find Companion</string>
+    <string name="name_placeholder">Name PlaceHolder</string>
+    <string name="breed_placeholder">Breed PlaceHolder</string>
+    <string name="city_placeholder">City PlaceHolder</string>
+    <string name="age_placeholder">Age PlaceHolder</string>
+    <string name="sex_placeholder">Sex PlaceHolder</string>
+    <string name="size_placeholder">Size PlaceHolder</string>
+    <string name="meet_title_placeholder">Meet Title PlaceHolder</string>
+    <string name="description_placeholder">Description PlaceHolder</string>
+    <string name="title_activity_splash">SplashActivity</string>
+
+</resources>
