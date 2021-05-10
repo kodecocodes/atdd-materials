@@ -2,7 +2,6 @@ package com.raywenderlich.android.cocktails.game.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.android.cocktails.common.repository.CocktailsRepository
 import com.raywenderlich.android.cocktails.game.factory.CocktailsGameFactory
 import com.raywenderlich.android.cocktails.game.model.Game
@@ -11,6 +10,7 @@ import com.raywenderlich.android.cocktails.game.model.Score
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.kotlin.*
 
 class CocktailsGameViewModelUnitTests {
   // 1

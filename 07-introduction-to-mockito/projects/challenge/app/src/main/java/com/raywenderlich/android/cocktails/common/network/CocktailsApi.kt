@@ -33,7 +33,7 @@ package com.raywenderlich.android.cocktails.common.network
 import android.os.Parcelable
 import com.google.gson.GsonBuilder
 import com.raywenderlich.android.cocktails.BuildConfig
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call

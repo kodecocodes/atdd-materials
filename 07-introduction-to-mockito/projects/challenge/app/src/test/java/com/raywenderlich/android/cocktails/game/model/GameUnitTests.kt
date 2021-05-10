@@ -30,10 +30,10 @@
 
 package com.raywenderlich.android.cocktails.game.model
 
-import com.nhaarman.mockitokotlin2.*
 import org.junit.Assert
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyString
+import org.mockito.kotlin.*
 
 class GameUnitTests {
 

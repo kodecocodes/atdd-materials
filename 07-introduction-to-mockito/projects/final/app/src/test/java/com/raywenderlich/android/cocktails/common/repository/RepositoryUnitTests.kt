@@ -1,14 +1,13 @@
 package com.raywenderlich.android.cocktails.common.repository
 
 import android.content.SharedPreferences
-import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.android.cocktails.common.network.CocktailsApi
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-
+import org.mockito.kotlin.*
 
 @RunWith(MockitoJUnitRunner::class)
 class RepositoryUnitTests {
