@@ -31,12 +31,16 @@
 package com.raywenderlich.android.cocktails
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import com.raywenderlich.android.cocktails.databinding.ActivityGameBinding
 
 class CocktailsGameActivity : AppCompatActivity() {
 
+  private lateinit var binding: ActivityGameBinding
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_game)
+    binding = ActivityGameBinding.inflate(layoutInflater)
+    setContentView(binding.root)
   }
 }

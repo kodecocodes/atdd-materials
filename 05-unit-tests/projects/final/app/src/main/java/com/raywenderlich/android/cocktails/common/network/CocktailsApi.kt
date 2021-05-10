@@ -31,16 +31,15 @@
 package com.raywenderlich.android.cocktails.common.network
 
 import android.os.Parcelable
-import com.raywenderlich.android.cocktails.BuildConfig
 import com.google.gson.GsonBuilder
-import kotlinx.android.parcel.Parcelize
+import com.raywenderlich.android.cocktails.BuildConfig
+import kotlinx.parcelize.Parcelize
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Query
 
 data class CocktailsContainer(val drinks: List<Cocktail>?)
 
