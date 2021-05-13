@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,12 +31,16 @@
 package com.raywenderlich.android.cocktails
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import com.raywenderlich.android.cocktails.databinding.ActivityGameBinding
 
 class CocktailsGameActivity : AppCompatActivity() {
 
+  private lateinit var binding: ActivityGameBinding
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_game)
+    binding = ActivityGameBinding.inflate(layoutInflater)
+    setContentView(binding.root)
   }
 }
