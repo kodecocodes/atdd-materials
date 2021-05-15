@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,6 @@ import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext
 import org.koin.core.context.startKoin
-import org.koin.core.logger.Level
 
 class App : Application(){
   override fun onCreate() {
@@ -42,8 +41,6 @@ class App : Application(){
 
     if (GlobalContext.getOrNull() == null) {
       startKoin {
-        // use Koin logger
-        logger(Level.DEBUG)
         // declare Android context
         androidContext(this@App)
         // declare used modules

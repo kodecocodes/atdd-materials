@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,7 @@ import com.raywenderlich.android.wishlist.MainViewModel
 import com.raywenderlich.android.wishlist.persistance.Repository
 import com.raywenderlich.android.wishlist.persistance.RepositoryImpl
 import com.raywenderlich.android.wishlist.persistance.WishlistDatabase
-import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {

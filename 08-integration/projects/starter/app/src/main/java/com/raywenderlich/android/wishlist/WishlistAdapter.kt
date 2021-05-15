@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,25 +30,25 @@
 
 package com.raywenderlich.android.wishlist
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
 import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_wishlist.view.*
 
 
-class WishlistAdapter(lifecycleOwner: LifecycleOwner,
-                      private val wishlist: LiveData<List<Wishlist>>,
-                      private val onItemSelected: (Wishlist) -> Unit) :
-    RecyclerView.Adapter<WishListViewHolder>() {
+class WishlistAdapter(
+    lifecycleOwner: LifecycleOwner,
+    private val wishlist: LiveData<List<Wishlist>>,
+    private val onItemSelected: (Wishlist) -> Unit
+) : RecyclerView.Adapter<WishListViewHolder>() {
 
   init {
-    wishlist.observe(lifecycleOwner, Observer { notifyDataSetChanged() })
+    wishlist.observe(lifecycleOwner, { notifyDataSetChanged() })
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WishListViewHolder {
@@ -65,7 +65,7 @@ class WishlistAdapter(lifecycleOwner: LifecycleOwner,
   }
 }
 
-class WishListViewHolder(val view: View, val onItemSelected: (Wishlist) -> Unit) :
+class WishListViewHolder(private val view: View, val onItemSelected: (Wishlist) -> Unit) :
     RecyclerView.ViewHolder(view) {
 
   private val wishItemAdapter = WishItemAdapter()
@@ -104,7 +104,7 @@ class WishItemAdapter : RecyclerView.Adapter<WishViewHolder>() {
 
 }
 
-class WishViewHolder(val view: TextView) : RecyclerView.ViewHolder(view) {
+class WishViewHolder(private val view: TextView) : RecyclerView.ViewHolder(view) {
   fun bind(wish: String) {
     view.text = wish
   }

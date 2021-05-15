@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,12 +34,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_wishlist_detail.*
 import kotlinx.android.synthetic.main.view_input_bottom_sheet.view.*
-import org.koin.android.viewmodel.ext.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class WishlistDetailActivity : AppCompatActivity() {
 
@@ -61,7 +60,7 @@ class WishlistDetailActivity : AppCompatActivity() {
     setContentView(R.layout.activity_wishlist_detail)
     recyclerWishes.layoutManager = LinearLayoutManager(this)
     recyclerWishes.adapter = wishlistAdapter
-    viewModel.getWishlist(intent.getIntExtra(EXTRA_WISHLIST, 0)).observe(this, Observer {
+    viewModel.getWishlist(intent.getIntExtra(EXTRA_WISHLIST, 0)).observe(this, {
       render(it)
     })
   }
