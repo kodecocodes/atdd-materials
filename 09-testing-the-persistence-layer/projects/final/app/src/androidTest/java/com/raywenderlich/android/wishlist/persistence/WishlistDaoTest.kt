@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,6 @@ import com.nhaarman.mockitokotlin2.verify
 import com.raywenderlich.android.wishlist.Wishlist
 import com.raywenderlich.android.wishlist.persistance.WishlistDao
 import com.raywenderlich.android.wishlist.persistance.WishlistDatabase
-import junit.framework.Assert.assertTrue
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -90,7 +89,7 @@ class WishlistDaoTest {
     val listClass = ArrayList::class.java as Class<ArrayList<Wishlist>>
     val argumentCaptor = ArgumentCaptor.forClass(listClass)
     verify(testObserver).onChanged(argumentCaptor.capture())
-    assertTrue(argumentCaptor.value.size > 0)
+    assert(argumentCaptor.value.size > 0)
   }
 
   @Test
@@ -106,7 +105,7 @@ class WishlistDaoTest {
     val argumentCaptor = ArgumentCaptor.forClass(listClass)
     verify(testObserver).onChanged(argumentCaptor.capture())
     val capturedArgument = argumentCaptor.value
-    assertTrue(capturedArgument.containsAll(listOf(wishlist1, wishlist2)))
+    assert(capturedArgument.containsAll(listOf(wishlist1, wishlist2)))
   }
 
   @Test
