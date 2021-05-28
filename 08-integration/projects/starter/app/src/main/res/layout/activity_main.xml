@@ -39,6 +39,8 @@
     android:id="@+id/recyclerView"
     android:layout_width="match_parent"
     android:layout_height="0dp"
+    android:paddingStart="@dimen/padding_small"
+    android:paddingEnd="@dimen/padding_small"
     app:layout_constraintBottom_toTopOf="@+id/buttonAddList"
     app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,9 +48,10 @@
     android:id="@+id/buttonAddList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorAccent"
+    android:layout_margin="@dimen/padding_normal"
+    android:padding="@dimen/padding_normal"
+    android:minHeight="@dimen/min_clickable_size"
     android:text="@string/add_list"
-    android:textColor="@color/cardview_light_background"
     app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
