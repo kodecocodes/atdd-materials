@@ -32,7 +32,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:layout_margin="8dp">
+  android:layout_margin="@dimen/padding_small">
 
   <LinearLayout
     android:layout_width="match_parent"
@@ -41,17 +41,17 @@
 
     <TextView
       android:id="@+id/title"
-      style="@style/Base.TextAppearance.AppCompat.Title"
+      style="@style/TextAppearance.MaterialComponents.Headline5"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:padding="8dp"
+      android:padding="@dimen/padding_small"
       tools:text="@tools:sample/first_names" />
 
     <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/recyclerWishes"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:padding="8dp" />
+      android:padding="@dimen/padding_small" />
   </LinearLayout>
 
 </androidx.cardview.widget.CardView>

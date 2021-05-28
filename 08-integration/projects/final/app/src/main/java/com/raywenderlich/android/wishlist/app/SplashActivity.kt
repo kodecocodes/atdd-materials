@@ -39,7 +39,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.raywenderlich.android.wishlist.MainActivity
-import com.raywenderlich.android.wishlist.R
+import com.raywenderlich.android.wishlist.databinding.ActivitySplashBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -55,7 +55,7 @@ class SplashActivity : AppCompatActivity() {
 
     makeFullScreen()
 
-    setContentView(R.layout.activity_splash)
+    setContentView(ActivitySplashBinding.inflate(layoutInflater).root)
 
     // Using a coroutine to delay loading the MainActivity
     lifecycleScope.launch {

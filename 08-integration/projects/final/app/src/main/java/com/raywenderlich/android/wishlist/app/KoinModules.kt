@@ -30,12 +30,12 @@
 
 package com.raywenderlich.android.wishlist.app
 
-import androidx.room.Room
 import com.raywenderlich.android.wishlist.DetailViewModel
 import com.raywenderlich.android.wishlist.MainViewModel
 import com.raywenderlich.android.wishlist.persistance.Repository
 import com.raywenderlich.android.wishlist.persistance.RepositoryImpl
-import com.raywenderlich.android.wishlist.persistance.WishlistDatabase
+import com.raywenderlich.android.wishlist.persistance.WishlistDao
+import com.raywenderlich.android.wishlist.persistance.WishlistDaoImpl
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -43,14 +43,7 @@ val appModule = module {
 
   single<Repository> { RepositoryImpl(get()) }
 
-  single {
-    Room.databaseBuilder(
-        get(),
-        WishlistDatabase::class.java, "wishlist-database"
-    )
-        .allowMainThreadQueries()
-        .build().wishlistDao()
-  }
+  single<WishlistDao> { WishlistDaoImpl() }
 
   viewModel { MainViewModel(get()) }
 
