@@ -52,7 +52,7 @@ class CocktailsGameActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     binding = ActivityGameBinding.inflate(layoutInflater)
     setContentView(binding.root)
-//
+
 //     val repository = (application as CocktailsApplication).repository
 //     val factory = (application as CocktailsApplication).gameFactory
 //     viewModel = ViewModelProvider(this, CocktailsGameViewModelFactory(repository, factory))
