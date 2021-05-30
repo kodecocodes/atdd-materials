@@ -31,14 +31,14 @@
 package com.raywenderlich.android.wishlist
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_wishlist.view.*
+import com.raywenderlich.android.wishlist.databinding.ItemWishlistBinding
+
 
 class WishlistAdapter(
     lifecycleOwner: LifecycleOwner,
@@ -51,8 +51,7 @@ class WishlistAdapter(
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WishListViewHolder {
-    return WishListViewHolder(LayoutInflater.from(parent.context)
-        .inflate(R.layout.item_wishlist, parent, false), onItemSelected)
+    return WishListViewHolder(ItemWishlistBinding.inflate(LayoutInflater.from(parent.context), parent, false), onItemSelected)
   }
 
   override fun getItemCount(): Int {
@@ -64,19 +63,19 @@ class WishlistAdapter(
   }
 }
 
-class WishListViewHolder(private val view: View, val onItemSelected: (Wishlist) -> Unit) :
-    RecyclerView.ViewHolder(view) {
+class WishListViewHolder(private val binding: ItemWishlistBinding, val onItemSelected: (Wishlist) -> Unit) :
+    RecyclerView.ViewHolder(binding.root) {
 
   private val wishItemAdapter = WishItemAdapter()
 
   init {
-    view.recyclerWishes.layoutManager = LinearLayoutManager(view.context)
-    view.recyclerWishes.adapter = wishItemAdapter
+    binding.recyclerWishes.layoutManager = LinearLayoutManager(binding.root.context)
+    binding.recyclerWishes.adapter = wishItemAdapter
   }
 
   fun bind(wishlist: Wishlist) {
-    view.title.text = wishlist.receiver
-    view.setOnClickListener {
+    binding.title.text = wishlist.receiver
+    binding.root.setOnClickListener {
       onItemSelected(wishlist)
     }
     wishItemAdapter.items.clear()

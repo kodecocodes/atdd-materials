@@ -32,7 +32,7 @@ package com.raywenderlich.android.wishlist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.raywenderlich.android.wishlist.persistence.Repository
+import com.raywenderlich.android.wishlist.persistance.Repository
 
 class MainViewModel(private val repository: Repository) : ViewModel() {
 

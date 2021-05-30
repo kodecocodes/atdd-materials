@@ -28,15 +28,26 @@
  * THE SOFTWARE.
  */
 
-package com.raywenderlich.android.wishlist.persistence
+package com.raywenderlich.android.wishlist.persistance
 
-import androidx.room.Database
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
+import androidx.lifecycle.LiveData
 import com.raywenderlich.android.wishlist.Wishlist
 
-@Database(entities = [Wishlist::class], version = 1)
-@TypeConverters(StringListConverter::class)
-abstract class WishlistDatabase : RoomDatabase() {
-    abstract fun wishlistDao(): WishlistDao
+class RepositoryImpl(private val wishlistDao: WishlistDao) : Repository {
+
+  override fun saveWishlist(wishlist: Wishlist) {
+    wishlistDao.save(wishlist)
+  }
+
+  override fun getWishlists(): LiveData<List<Wishlist>> {
+    return wishlistDao.getAll()
+  }
+
+  override fun getWishlist(id: Int): LiveData<Wishlist> {
+    return wishlistDao.findById(id)
+  }
+
+  override fun saveWishlistItem(wishlist: Wishlist, name: String) {
+    wishlistDao.save(wishlist.copy(wishes = wishlist.wishes + name))
+  }
 }

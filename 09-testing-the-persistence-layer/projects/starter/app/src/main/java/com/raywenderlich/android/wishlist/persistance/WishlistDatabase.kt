@@ -28,24 +28,14 @@
  * THE SOFTWARE.
  */
 
-package com.raywenderlich.android.wishlist.app
+package com.raywenderlich.android.wishlist.persistance
 
-import com.raywenderlich.android.wishlist.DetailViewModel
-import com.raywenderlich.android.wishlist.MainViewModel
-import com.raywenderlich.android.wishlist.persistance.Repository
-import com.raywenderlich.android.wishlist.persistance.RepositoryImpl
-import com.raywenderlich.android.wishlist.persistance.WishlistDao
-import com.raywenderlich.android.wishlist.persistance.WishlistDaoImpl
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.dsl.module
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.raywenderlich.android.wishlist.Wishlist
 
-val appModule = module {
-
-  single<Repository> { RepositoryImpl(get()) }
-
-  single<WishlistDao> { WishlistDaoImpl() }
-
-  viewModel { MainViewModel(get()) }
-
-  viewModel { DetailViewModel(get()) }
+@Database(entities = [Wishlist::class], version = 1)
+@TypeConverters(StringListConverter::class)
+abstract class WishlistDatabase : RoomDatabase() {
 }

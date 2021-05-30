@@ -34,15 +34,16 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:paddingStart="@dimen/padding_normal"
+  android:paddingEnd="@dimen/padding_normal"
   tools:context=".WishlistDetailActivity">
 
   <TextView
     android:id="@+id/textViewTitle"
-    style="@style/Base.TextAppearance.AppCompat.Title"
+    style="@style/TextAppearance.MaterialComponents.Headline5"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
-    android:padding="8dp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     tools:text="@tools:sample/first_names" />
@@ -53,7 +54,6 @@
     android:layout_height="0dp"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
-    android:padding="8dp"
     app:layout_constraintBottom_toTopOf="@+id/buttonAddList"
     app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
 
@@ -61,9 +61,10 @@
     android:id="@+id/buttonAddList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorAccent"
+    android:layout_margin="@dimen/padding_normal"
+    android:padding="@dimen/padding_normal"
+    android:minHeight="@dimen/min_clickable_size"
     android:text="@string/add_wish"
-    android:textColor="@color/cardview_light_background"
     app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

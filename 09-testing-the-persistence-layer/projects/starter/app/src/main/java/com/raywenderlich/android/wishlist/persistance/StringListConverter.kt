@@ -28,25 +28,19 @@
  * THE SOFTWARE.
  */
 
-package com.raywenderlich.android.wishlist.persistence
+package com.raywenderlich.android.wishlist.persistance
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.raywenderlich.android.wishlist.Wishlist
+import androidx.room.TypeConverter
 
-class RepositoryImpl(private val wishlistDao: WishlistDao) : Repository {
+object StringListConverter {
 
-  override fun saveWishlist(wishlist: Wishlist) {
+    @TypeConverter
+    @JvmStatic
+    fun stringListToString(list: MutableList<String>?): String? =
+        list?.joinToString(separator = "|")
+
+    @TypeConverter
+    @JvmStatic
+    fun stringToStringList(string: String?): MutableList<String>? =
+        string?.split("|")?.toMutableList()
   }
-
-  override fun getWishlists(): LiveData<List<Wishlist>> {
-      return MutableLiveData()
-  }
-
-  override fun getWishlist(id: Int): LiveData<Wishlist> {
-    return MutableLiveData()
-  }
-
-  override fun saveWishlistItem(wishlist: Wishlist, name: String) {
-  }
-}
