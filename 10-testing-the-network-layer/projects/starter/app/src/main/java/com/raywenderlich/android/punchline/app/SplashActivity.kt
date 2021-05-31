@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,12 +32,14 @@ package com.raywenderlich.android.punchline.app
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Window
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.raywenderlich.android.punchline.MainActivity
-import com.raywenderlich.android.punchline.R
+import com.raywenderlich.android.punchline.databinding.ActivitySplashBinding
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * Splash Screen with the app icon and name at the center, this is also the launch screen and
@@ -51,13 +53,13 @@ class SplashActivity : AppCompatActivity() {
 
     makeFullScreen()
 
-    setContentView(R.layout.activity_splash)
+    setContentView(ActivitySplashBinding.inflate(layoutInflater).root)
 
-    // Using a handler to delay loading the MainActivity
-    Handler().postDelayed({
-
+    // Using a coroutine to delay loading the MainActivity
+    lifecycleScope.launch {
+      delay(2000)
       // Start activity
-      startActivity(Intent(this, MainActivity::class.java))
+      startActivity(Intent(this@SplashActivity, MainActivity::class.java))
 
       // Animate the loading of new activity
       overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
@@ -65,7 +67,7 @@ class SplashActivity : AppCompatActivity() {
       // Close this activity
       finish()
 
-    }, 2000)
+    }
   }
 
   private fun makeFullScreen() {
