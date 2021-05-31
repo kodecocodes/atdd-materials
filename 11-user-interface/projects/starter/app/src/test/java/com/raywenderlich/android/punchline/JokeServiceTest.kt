@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,22 +32,24 @@ package com.raywenderlich.android.punchline
 
 import com.github.javafaker.Faker
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
-import junit.framework.TestCase.assertEquals
+import junit.framework.Assert.assertEquals
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 private const val id = "6"
-private const val joke = "How does a train eat? It goes chew, chew"
-private const val testJson = """{ "id": $id, "joke": "$joke" }"""
+private const val joke =
+    "How does a train eat? It goes chew, chew"
 
 class JokeServiceTestUsingMockWebServer {
+
+  private val testJson = """{ "id": $id, "joke": "$joke" }"""
 
   @get:Rule
   val mockWebServer = MockWebServer()
@@ -81,7 +83,6 @@ class JokeServiceTestUsingMockWebServer {
         MockResponse()
             .setBody(testJson)
             .setResponseCode(200))
-
     val testObserver = jokeService.getRandomJoke().test()
     testObserver.assertNoErrors()
     assertEquals("/random_joke.json",
@@ -99,7 +100,6 @@ class JokeServiceTestMockingService {
     val joke = Joke(id, joke)
     whenever(jokeService.getRandomJoke())
         .thenReturn(Single.just(joke))
-
     val testObserver = repository.getJoke().test()
     testObserver.assertValue(joke)
   }
@@ -116,10 +116,11 @@ class JokeServiceTestUsingFaker {
     val joke = Joke(
         faker.idNumber().valid(),
         faker.lorem().sentence())
+
     whenever(jokeService.getRandomJoke())
         .thenReturn(Single.just(joke))
-
     val testObserver = repository.getJoke().test()
+
     testObserver.assertValue(joke)
   }
 }

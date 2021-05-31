@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,23 +33,24 @@ package com.raywenderlich.android.punchline
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.activity_main.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import com.raywenderlich.android.punchline.databinding.ActivityMainBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
   private val viewModel: MainViewModel by viewModel()
+  private lateinit var binding: ActivityMainBinding
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
+    binding = ActivityMainBinding.inflate(layoutInflater)
+    setContentView(binding.root)
 
-    viewModel.state.observe(this, Observer<UiModel> { uiModel ->
+    viewModel.state.observe(this, { uiModel ->
       render(uiModel)
     })
     viewModel.getJoke()
-    buttonNewJoke.setOnClickListener {
+    binding.buttonNewJoke.setOnClickListener {
       viewModel.getJoke()
     }
   }
@@ -62,7 +63,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun showJoke(joke: Joke) {
-    textJoke.text = joke.joke
+    binding.textJoke.text = joke.joke
   }
 
   private fun showError(error: String) {
