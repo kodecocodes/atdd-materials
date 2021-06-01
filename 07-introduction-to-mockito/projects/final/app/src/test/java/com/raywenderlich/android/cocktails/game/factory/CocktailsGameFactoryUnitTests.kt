@@ -1,6 +1,5 @@
 package com.raywenderlich.android.cocktails.game.factory
 
-import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.android.cocktails.common.network.Cocktail
 import com.raywenderlich.android.cocktails.common.repository.CocktailsRepository
 import com.raywenderlich.android.cocktails.common.repository.RepositoryCallback
@@ -9,6 +8,7 @@ import com.raywenderlich.android.cocktails.game.model.Question
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import org.mockito.kotlin.*
 
 class CocktailsGameFactoryUnitTests {
 
