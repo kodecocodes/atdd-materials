@@ -77,15 +77,10 @@ class SplashActivity : AppCompatActivity() {
     requestWindowFeature(Window.FEATURE_NO_TITLE)
 
     // Make Fullscreen
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-      window.insetsController?.hide(WindowInsets.Type.statusBars())
-    } else {
-      @Suppress("DEPRECATION")
-      window.setFlags(
-          WindowManager.LayoutParams.FLAG_FULLSCREEN,
-          WindowManager.LayoutParams.FLAG_FULLSCREEN
-      )
-    }
+    window.setFlags(
+        WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        WindowManager.LayoutParams.FLAG_FULLSCREEN
+    )
 
     // Hide the toolbar
     supportActionBar?.hide()
