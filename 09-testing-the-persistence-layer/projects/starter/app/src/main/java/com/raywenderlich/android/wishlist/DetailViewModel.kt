@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,7 @@ package com.raywenderlich.android.wishlist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.raywenderlich.android.wishlist.persistence.Repository
+import com.raywenderlich.android.wishlist.persistance.Repository
 
 class DetailViewModel(private val repository: Repository) : ViewModel() {
 

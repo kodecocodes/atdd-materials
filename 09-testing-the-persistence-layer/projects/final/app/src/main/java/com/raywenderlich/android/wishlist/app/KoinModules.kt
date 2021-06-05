@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,18 +30,14 @@
 
 package com.raywenderlich.android.wishlist.app
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
 import com.raywenderlich.android.wishlist.DetailViewModel
 import com.raywenderlich.android.wishlist.MainViewModel
-import com.raywenderlich.android.wishlist.Wishlist
 import com.raywenderlich.android.wishlist.persistance.Repository
 import com.raywenderlich.android.wishlist.persistance.RepositoryImpl
-import com.raywenderlich.android.wishlist.persistance.WishlistDao
 import com.raywenderlich.android.wishlist.persistance.WishlistDatabase
-import org.koin.android.viewmodel.ext.koin.viewModel
-import org.koin.dsl.module.module
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.module
 
 val appModule = module {
 
@@ -51,8 +47,7 @@ val appModule = module {
     Room.databaseBuilder(
         get(),
         WishlistDatabase::class.java, "wishlist-database"
-    )
-        .allowMainThreadQueries()
+    ).allowMainThreadQueries()
         .build().wishlistDao()
   }
 

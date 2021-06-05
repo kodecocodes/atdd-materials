@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,12 +34,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.activity_wishlist_detail.*
-import kotlinx.android.synthetic.main.view_input_bottom_sheet.view.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import com.raywenderlich.android.wishlist.databinding.ActivityWishlistDetailBinding
+import com.raywenderlich.android.wishlist.databinding.ViewInputBottomSheetBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class WishlistDetailActivity : AppCompatActivity() {
 
@@ -55,35 +54,38 @@ class WishlistDetailActivity : AppCompatActivity() {
 
   private val viewModel: DetailViewModel by viewModel()
   private val wishlistAdapter: WishItemAdapter = WishItemAdapter()
+  private lateinit var binding: ActivityWishlistDetailBinding
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_wishlist_detail)
-    recyclerWishes.layoutManager = LinearLayoutManager(this)
-    recyclerWishes.adapter = wishlistAdapter
-    viewModel.getWishlist(intent.getIntExtra(EXTRA_WISHLIST, 0)).observe(this, Observer {
+    binding = ActivityWishlistDetailBinding.inflate(layoutInflater)
+    setContentView(binding.root)
+    binding.recyclerWishes.layoutManager = LinearLayoutManager(this)
+    binding.recyclerWishes.adapter = wishlistAdapter
+    viewModel.getWishlist(intent.getIntExtra(EXTRA_WISHLIST, 0)).observe(this, {
       render(it)
     })
   }
 
   private fun render(wishlist: Wishlist) {
-    textViewTitle.text = wishlist.receiver
+    binding.textViewTitle.text = wishlist.receiver
     wishlistAdapter.items.clear()
     wishlistAdapter.items.addAll(wishlist.wishes)
     wishlistAdapter.notifyDataSetChanged()
 
-    buttonAddList.setOnClickListener { showAddListInput(wishlist) }
+    binding.buttonAddList.setOnClickListener { showAddListInput(wishlist) }
   }
 
   private fun showAddListInput(wishlist: Wishlist) {
     BottomSheetDialog(this).apply {
-      val view = layoutInflater.inflate(R.layout.view_input_bottom_sheet, null)
-      view.title.text = getString(R.string.title_add_wish)
-      view.buttonSave.setOnClickListener {
-        viewModel.saveNewItem(wishlist, view.editTextInput.text.toString())
+      val bottomSheetBinding = ViewInputBottomSheetBinding.inflate(layoutInflater)
+      bottomSheetBinding.title.text = getString(R.string.title_add_wish)
+      bottomSheetBinding.textField.hint = getString(R.string.title_add_wish)
+      bottomSheetBinding.buttonSave.setOnClickListener {
+        viewModel.saveNewItem(wishlist, bottomSheetBinding.editTextInput.text.toString())
         this.dismiss()
       }
-      setContentView(view)
+      setContentView(bottomSheetBinding.root)
       show()
     }
   }

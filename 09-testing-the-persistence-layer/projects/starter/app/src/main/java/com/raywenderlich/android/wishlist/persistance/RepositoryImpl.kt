@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,26 @@
  * THE SOFTWARE.
  */
 
-package com.raywenderlich.android.wishlist.persistence
+package com.raywenderlich.android.wishlist.persistance
 
-import androidx.room.Dao
+import androidx.lifecycle.LiveData
+import com.raywenderlich.android.wishlist.Wishlist
 
-@Dao
-interface WishlistDao {
+class RepositoryImpl(private val wishlistDao: WishlistDao) : Repository {
+
+  override fun saveWishlist(wishlist: Wishlist) {
+    wishlistDao.save(wishlist)
+  }
+
+  override fun getWishlists(): LiveData<List<Wishlist>> {
+    return wishlistDao.getAll()
+  }
+
+  override fun getWishlist(id: Int): LiveData<Wishlist> {
+    return wishlistDao.findById(id)
+  }
+
+  override fun saveWishlistItem(wishlist: Wishlist, name: String) {
+    wishlistDao.save(wishlist.copy(wishes = wishlist.wishes + name))
+  }
 }

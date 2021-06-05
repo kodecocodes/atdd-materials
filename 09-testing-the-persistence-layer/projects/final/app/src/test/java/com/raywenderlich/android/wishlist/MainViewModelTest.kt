@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,25 +28,60 @@
  * THE SOFTWARE.
  */
 
-package com.raywenderlich.android.wishlist.persistence
+package com.raywenderlich.android.wishlist
 
-import androidx.lifecycle.LiveData
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
-import com.raywenderlich.android.wishlist.Wishlist
+import androidx.lifecycle.Observer
+import com.raywenderlich.android.wishlist.persistance.Repository
+import org.junit.Rule
+import org.junit.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 
-class RepositoryImpl(val wishlistDao: WishlistDao) : Repository {
+class MainViewModelTest {
 
-  override fun saveWishlist(wishlist: Wishlist) {
+  @get:Rule
+  @Suppress("unused")
+  var instantTaskExecutorRule = InstantTaskExecutorRule()
+
+  private val mockRepository: Repository = mock()
+
+  private val viewModel = MainViewModel(mockRepository)
+
+  @Test
+  fun saveNewListCallsRepository() {
+    viewModel.saveNewList("New list")
+
+    verify(mockRepository).saveWishlist(any())
   }
 
-  override fun getWishlists(): LiveData<List<Wishlist>> {
-      return MutableLiveData()
+  @Test
+  fun saveNewListCallsRepositoryCorrectWithData() {
+    val name = "New list"
+    viewModel.saveNewList(name)
+
+    verify(mockRepository).saveWishlist(Wishlist(name, listOf()))
   }
 
-  override fun getWishlist(id: Int): LiveData<Wishlist> {
-    return MutableLiveData()
+  @Test
+  fun getWishlistsCallsRepository() {
+    viewModel.getWishlists()
+
+    verify(mockRepository).getWishlists()
   }
 
-  override fun saveWishlistItem(wishlist: Wishlist, name: String) {
+  @Test
+  fun getWishListReturnsReturnsData() {
+    val wishes = listOf(Wishlist("Victoria", listOf("RW Book")))
+    whenever(mockRepository.getWishlists())
+        .thenReturn(MutableLiveData<List<Wishlist>>().apply { postValue(wishes) })
+
+    val mockObserver = mock<Observer<List<Wishlist>>>()
+    viewModel.getWishlists().observeForever(mockObserver)
+
+    verify(mockObserver).onChanged(wishes)
   }
 }

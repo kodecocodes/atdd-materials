@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,10 +33,8 @@ package com.raywenderlich.android.wishlist.persistence
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import androidx.room.Room
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
 import com.raywenderlich.android.wishlist.Wishlist
 import com.raywenderlich.android.wishlist.persistance.WishlistDao
 import com.raywenderlich.android.wishlist.persistance.WishlistDatabase
@@ -47,6 +45,8 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 
 @RunWith(AndroidJUnit4::class)
 class WishlistDaoTest {
@@ -60,7 +60,7 @@ class WishlistDaoTest {
   @Before
   fun initDb() {
     wishlistDatabase = Room.inMemoryDatabaseBuilder(
-        InstrumentationRegistry.getInstrumentation().context,
+        ApplicationProvider.getApplicationContext(),
         WishlistDatabase::class.java).build()
 
     wishlistDao = wishlistDatabase.wishlistDao()
@@ -87,7 +87,8 @@ class WishlistDaoTest {
     val testObserver: Observer<List<Wishlist>> = mock()
     wishlistDao.getAll().observeForever(testObserver)
 
-    val listClass = ArrayList::class.java as Class<ArrayList<Wishlist>>
+    val listClass =
+        ArrayList::class.java as Class<ArrayList<Wishlist>>
     val argumentCaptor = ArgumentCaptor.forClass(listClass)
     verify(testObserver).onChanged(argumentCaptor.capture())
     assertTrue(argumentCaptor.value.size > 0)
@@ -102,11 +103,13 @@ class WishlistDaoTest {
     val testObserver: Observer<List<Wishlist>> = mock()
     wishlistDao.getAll().observeForever(testObserver)
 
-    val listClass = ArrayList::class.java as Class<ArrayList<Wishlist>>
+    val listClass =
+        ArrayList::class.java as Class<ArrayList<Wishlist>>
     val argumentCaptor = ArgumentCaptor.forClass(listClass)
     verify(testObserver).onChanged(argumentCaptor.capture())
     val capturedArgument = argumentCaptor.value
-    assertTrue(capturedArgument.containsAll(listOf(wishlist1, wishlist2)))
+    assertTrue(capturedArgument
+        .containsAll(listOf(wishlist1, wishlist2)))
   }
 
   @Test

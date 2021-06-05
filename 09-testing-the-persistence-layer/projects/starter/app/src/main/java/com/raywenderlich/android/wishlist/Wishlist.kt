@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,10 +34,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Wishlist(val receiver: String,
-                    val wishes: List<String>,
-                    @PrimaryKey(autoGenerate = true)
-                    var id: Int = 0) {
+data class Wishlist(
+    val receiver: String,
+    val wishes: List<String>,
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
+) {
 
   override fun equals(other: Any?): Boolean {
     if (this === other) return true

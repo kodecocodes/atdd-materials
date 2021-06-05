@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,7 @@ object StringListConverter {
 
     @TypeConverter
     @JvmStatic
-    fun stringTostringList(string: String?): MutableList<String>? =
-        if (!string.isNullOrBlank()) string?.split("|")?.toMutableList()
+    fun stringToStringList(string: String?): MutableList<String> =
+        if (!string.isNullOrBlank()) string.split("|").toMutableList()
         else mutableListOf()
   }

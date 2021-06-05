@@ -28,24 +28,69 @@
  * THE SOFTWARE.
  */
 
-package com.raywenderlich.android.wishlist.app
+package com.raywenderlich.android.wishlist
 
-import com.raywenderlich.android.wishlist.DetailViewModel
-import com.raywenderlich.android.wishlist.MainViewModel
-import com.raywenderlich.android.wishlist.persistance.Repository
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
 import com.raywenderlich.android.wishlist.persistance.RepositoryImpl
 import com.raywenderlich.android.wishlist.persistance.WishlistDao
 import com.raywenderlich.android.wishlist.persistance.WishlistDaoImpl
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.dsl.module
+import org.junit.Rule
+import org.junit.Test
+import org.mockito.Mockito
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 
-val appModule = module {
+class DetailViewModelTest {
 
-  single<Repository> { RepositoryImpl(get()) }
+  @get:Rule
+  var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-  single<WishlistDao> { WishlistDaoImpl() }
+  private val wishlistDao: WishlistDao =
+      Mockito.spy(WishlistDaoImpl())
+  private val viewModel =
+      DetailViewModel(RepositoryImpl(wishlistDao))
 
-  viewModel { MainViewModel(get()) }
+  @Test
+  fun saveNewItemCallsDatabase() {
+    viewModel.saveNewItem(Wishlist("Victoria",
+        listOf("RW Android Apprentice Book", "Android phone"), 1),
+        "Smart watch")
 
-  viewModel { DetailViewModel(get()) }
+    verify(wishlistDao).save(any())
+  }
+
+  @Test
+  fun saveNewItemSavesData() {
+    val wishlist = Wishlist("Victoria",
+        listOf("RW Android Apprentice Book", "Android phone"), 1)
+    val name = "Smart watch"
+    viewModel.saveNewItem(wishlist, name)
+
+    val mockObserver = mock<Observer<Wishlist>>()
+    wishlistDao.findById(wishlist.id)
+        .observeForever(mockObserver)
+    verify(mockObserver).onChanged(
+        wishlist.copy(wishes = wishlist.wishes + name))
+  }
+
+  @Test
+  fun getWishListCallsDatabase() {
+    viewModel.getWishlist(1)
+
+    verify(wishlistDao).findById(any())
+  }
+
+  @Test
+  fun getWishListReturnsCorrectData() {
+    val wishlist = Wishlist("Victoria",
+        listOf("RW Android Apprentice Book", "Android phone"), 1)
+
+    wishlistDao.save(wishlist)
+
+    val mockObserver = mock<Observer<Wishlist>>()
+    viewModel.getWishlist(1).observeForever(mockObserver)
+    verify(mockObserver).onChanged(wishlist)
+  }
 }

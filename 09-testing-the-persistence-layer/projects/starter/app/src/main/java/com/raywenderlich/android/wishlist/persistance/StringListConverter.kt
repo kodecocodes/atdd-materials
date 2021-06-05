@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,15 +28,19 @@
  * THE SOFTWARE.
  */
 
-package com.raywenderlich.android.wishlist.persistence
+package com.raywenderlich.android.wishlist.persistance
 
-import androidx.room.Database
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import com.raywenderlich.android.wishlist.Wishlist
+import androidx.room.TypeConverter
 
-@Database(entities = [Wishlist::class], version = 1)
-@TypeConverters(StringListConverter::class)
-abstract class WishlistDatabase : RoomDatabase() {
-    abstract fun wishlistDao(): WishlistDao
-}
+object StringListConverter {
+
+    @TypeConverter
+    @JvmStatic
+    fun stringListToString(list: MutableList<String>?): String? =
+        list?.joinToString(separator = "|")
+
+    @TypeConverter
+    @JvmStatic
+    fun stringToStringList(string: String?): MutableList<String>? =
+        string?.split("|")?.toMutableList()
+  }

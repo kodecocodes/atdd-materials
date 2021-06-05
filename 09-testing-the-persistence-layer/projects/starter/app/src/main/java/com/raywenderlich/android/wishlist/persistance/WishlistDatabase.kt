@@ -30,12 +30,12 @@
 
 package com.raywenderlich.android.wishlist.persistance
 
-import androidx.lifecycle.LiveData
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.raywenderlich.android.wishlist.Wishlist
 
-interface Repository {
-  fun saveWishlist(wishlist: Wishlist)
-  fun getWishlists(): LiveData<List<Wishlist>>
-  fun getWishlist(id: Int): LiveData<Wishlist>
-  fun saveWishlistItem(wishlist: Wishlist, name: String)
+@Database(entities = [Wishlist::class], version = 1)
+@TypeConverters(StringListConverter::class)
+abstract class WishlistDatabase : RoomDatabase() {
 }

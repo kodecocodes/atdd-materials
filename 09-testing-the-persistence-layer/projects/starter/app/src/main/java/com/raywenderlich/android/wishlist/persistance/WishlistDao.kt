@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,19 +28,36 @@
  * THE SOFTWARE.
  */
 
-package com.raywenderlich.android.wishlist.persistence
+package com.raywenderlich.android.wishlist.persistance
 
-import androidx.room.TypeConverter
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import com.raywenderlich.android.wishlist.Wishlist
 
-object StringListConverter {
+interface WishlistDao {
 
-    @TypeConverter
-    @JvmStatic
-    fun stringListToString(list: MutableList<String>?): String? =
-        list?.joinToString(separator = "|")
+  fun getAll(): LiveData<List<Wishlist>>
 
-    @TypeConverter
-    @JvmStatic
-    fun stringTostringList(string: String?): MutableList<String>? =
-        string?.split("|")?.toMutableList()
+  fun findById(id: Int): LiveData<Wishlist>
+
+  fun save(vararg wishlist: Wishlist)
+}
+
+open class WishlistDaoImpl : WishlistDao {
+  private val wishlists = MutableLiveData<List<Wishlist>>(listOf())
+
+  override fun getAll(): LiveData<List<Wishlist>> {
+    return wishlists
   }
+
+  override fun findById(id: Int): LiveData<Wishlist> {
+    return Transformations.map(wishlists) {
+      it.find { wishlist -> wishlist.id == id }
+    }
+  }
+
+  override fun save(vararg wishlist: Wishlist) {
+    wishlists.postValue(wishlists.value!!.toMutableList() + wishlist)
+  }
+}

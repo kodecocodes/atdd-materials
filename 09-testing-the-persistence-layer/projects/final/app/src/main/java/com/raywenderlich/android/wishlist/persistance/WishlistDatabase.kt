@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,5 +38,5 @@ import com.raywenderlich.android.wishlist.Wishlist
 @Database(entities = [Wishlist::class], version = 1)
 @TypeConverters(StringListConverter::class)
 abstract class WishlistDatabase : RoomDatabase() {
-    abstract fun wishlistDao(): WishlistDao
+  abstract fun wishlistDao(): WishlistDao
 }
