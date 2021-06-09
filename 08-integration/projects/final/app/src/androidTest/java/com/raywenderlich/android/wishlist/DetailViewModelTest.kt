@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,44 +32,39 @@ package com.raywenderlich.android.wishlist
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import androidx.room.Room
-import androidx.test.platform.app.InstrumentationRegistry
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
 import com.raywenderlich.android.wishlist.persistance.RepositoryImpl
 import com.raywenderlich.android.wishlist.persistance.WishlistDao
-import com.raywenderlich.android.wishlist.persistance.WishlistDatabase
+import com.raywenderlich.android.wishlist.persistance.WishlistDaoImpl
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 
 class DetailViewModelTest {
 
   @get:Rule
   var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-  private val wishlistDao: WishlistDao = Mockito.spy(
-      Room.inMemoryDatabaseBuilder(
-      InstrumentationRegistry.getInstrumentation().context,
-      WishlistDatabase::class.java)
-          .allowMainThreadQueries()
-          .build().wishlistDao())
-
-  private val viewModel = DetailViewModel(RepositoryImpl(wishlistDao))
+  private val wishlistDao: WishlistDao =
+      Mockito.spy(WishlistDaoImpl())
+  private val viewModel =
+      DetailViewModel(RepositoryImpl(wishlistDao))
 
   @Test
   fun saveNewItemCallsDatabase() {
-    viewModel.saveNewItem(Wishlist("Victoria", listOf("RW Android Apprentice Book",
-        "Android phone"), 1), "Smart watch")
+    viewModel.saveNewItem(Wishlist("Victoria",
+        listOf("RW Android Apprentice Book", "Android phone"), 1),
+        "Smart watch")
 
     verify(wishlistDao).save(any())
   }
 
   @Test
   fun saveNewItemSavesData() {
-    val wishlist = Wishlist("Victoria", listOf("RW Android Apprentice Book",
-        "Android phone"), 1)
+    val wishlist = Wishlist("Victoria",
+        listOf("RW Android Apprentice Book", "Android phone"), 1)
     val name = "Smart watch"
     viewModel.saveNewItem(wishlist, name)
 
@@ -89,14 +84,13 @@ class DetailViewModelTest {
 
   @Test
   fun getWishListReturnsCorrectData() {
-    val wishlist = Wishlist("Victoria", listOf("RW Android Apprentice Book",
-        "Android phone"),
-        1)
+    val wishlist = Wishlist("Victoria",
+        listOf("RW Android Apprentice Book", "Android phone"), 1)
+
     wishlistDao.save(wishlist)
 
     val mockObserver = mock<Observer<Wishlist>>()
     viewModel.getWishlist(1).observeForever(mockObserver)
-
     verify(mockObserver).onChanged(wishlist)
   }
 }

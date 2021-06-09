@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) 2019 Razeware LLC
+  ~ Copyright (c) 2021 Razeware LLC
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -32,32 +32,39 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:minHeight="400dp"
   android:background="@color/cardview_light_background"
-  android:orientation="vertical">
+  android:minHeight="400dp"
+  android:orientation="vertical"
+  android:padding="@dimen/padding_normal">
 
   <TextView
     android:id="@+id/title"
-    style="@style/Base.TextAppearance.AppCompat.Title"
+    style="@style/TextAppearance.MaterialComponents.Headline4"
     android:layout_width="wrap_content"
-    android:focusedByDefault="true"
     android:layout_height="wrap_content"
-    android:padding="8dp"
     tools:text="@tools:sample/lorem" />
 
-
-  <EditText
-    android:id="@+id/editTextInput"
+  <com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/textField"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:inputType="text|textCapWords|textPersonName" />
+    android:layout_marginTop="@dimen/padding_normal">
+
+    <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/editTextInput"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:inputType="text|textCapWords|textPersonName" />
+
+  </com.google.android.material.textfield.TextInputLayout>
 
   <Button
     android:id="@+id/buttonSave"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorAccent"
-    android:text="@string/save"
-    android:textColor="@color/cardview_light_background" />
+    android:layout_marginTop="@dimen/padding_normal"
+    android:padding="@dimen/padding_normal"
+    android:minHeight="@dimen/min_clickable_size"
+    android:text="@string/save" />
 
 </LinearLayout>

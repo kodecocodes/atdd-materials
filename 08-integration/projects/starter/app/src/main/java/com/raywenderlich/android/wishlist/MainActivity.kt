@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,34 +34,37 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.view_input_bottom_sheet.view.*
-import org.koin.android.viewmodel.ext.viewModel
+import com.raywenderlich.android.wishlist.databinding.ActivityMainBinding
+import com.raywenderlich.android.wishlist.databinding.ViewInputBottomSheetBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
   private val viewModel: MainViewModel by viewModel()
+  private lateinit var binding: ActivityMainBinding
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
-    recyclerView.layoutManager = GridLayoutManager(this, 2)
-    recyclerView.adapter = WishlistAdapter(this, viewModel.getWishlists()) {
+    binding = ActivityMainBinding.inflate(layoutInflater)
+    setContentView(binding.root)
+    binding.recyclerView.layoutManager = GridLayoutManager(this, 2)
+    binding.recyclerView.adapter = WishlistAdapter(this, viewModel.getWishlists()) {
       startActivity(WishlistDetailActivity.newIntent(it, this))
     }
 
-    buttonAddList.setOnClickListener { showAddListInput() }
+    binding.buttonAddList.setOnClickListener { showAddListInput() }
   }
 
   private fun showAddListInput() {
     BottomSheetDialog(this).apply {
-      val view = layoutInflater.inflate(R.layout.view_input_bottom_sheet, null)
-      view.title.text = getString(R.string.title_list_person)
-      view.buttonSave.setOnClickListener {
-        viewModel.saveNewList(view.editTextInput.text.toString())
+      val bottomSheetBinding = ViewInputBottomSheetBinding.inflate(layoutInflater)
+      bottomSheetBinding.title.text = getString(R.string.title_list_person)
+      bottomSheetBinding.textField.hint = getString(R.string.title_list_person)
+      bottomSheetBinding.buttonSave.setOnClickListener {
+        viewModel.saveNewList(bottomSheetBinding.editTextInput.text.toString())
         this.dismiss()
       }
-      setContentView(view)
+      setContentView(bottomSheetBinding.root)
       show()
     }
   }
