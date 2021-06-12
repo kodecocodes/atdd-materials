@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,32 +37,38 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.javafaker.Faker
-import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
-import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.KoinTest
 import org.koin.test.inject
+import org.koin.test.mock.MockProviderRule
 import org.koin.test.mock.declareMock
+import org.mockito.Mockito
+import org.mockito.invocation.InvocationOnMock
+import org.mockito.kotlin.whenever
+import org.mockito.stubbing.Answer
 
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest : KoinTest {
 
+  @get:Rule
+  val mockProvider = MockProviderRule.create { clazz ->
+    Mockito.mock(clazz.java)
+  }
+
   private val mockRepository: Repository by inject()
   private var faker = Faker()
 
-  @Before
-  fun setUp() {
-    declareMock<Repository>()
-  }
-
   @Test
   fun onLaunchButtonIsDisplayed() {
-    whenever(mockRepository.getJoke())
-        .thenReturn(Single.just(Joke(
-            faker.idNumber().valid(),
-            faker.lorem().sentence())))
+    declareMock<Repository> {
+      whenever(getJoke())
+          .thenReturn(Single.just(Joke(
+              faker.idNumber().valid(),
+              faker.lorem().sentence())))
+    }
 
     ActivityScenario.launch(MainActivity::class.java)
     onView(withId(R.id.buttonNewJoke))
@@ -74,8 +80,10 @@ class MainActivityTest : KoinTest {
     val joke = Joke(
         faker.idNumber().valid(),
         faker.lorem().sentence())
-    whenever(mockRepository.getJoke())
-        .thenReturn(Single.just(joke))
+    declareMock<Repository> {
+      whenever(getJoke())
+          .thenReturn(Single.just(joke))
+    }
 
     ActivityScenario.launch(MainActivity::class.java)
     onView(withId(R.id.textJoke))
@@ -84,18 +92,28 @@ class MainActivityTest : KoinTest {
 
   @Test
   fun onButtonClickNewJokeIsDisplayed() {
-    whenever(mockRepository.getJoke())
-        .thenReturn(Single.just(Joke(
-            faker.idNumber().valid(),
-            faker.lorem().sentence())))
-    ActivityScenario.launch(MainActivity::class.java)
-
     val joke = Joke(
         faker.idNumber().valid(),
         faker.lorem().sentence())
-    whenever(mockRepository.getJoke())
-        .thenReturn(Single.just(joke))
-
+    val jokeQueueAnswer = object: Answer<Single<Joke>> {
+      val jokes = listOf(
+          Joke(
+              faker.idNumber().valid(),
+              faker.lorem().sentence()),
+          joke
+      )
+      var currentJoke = -1
+      override fun answer(invocation: InvocationOnMock?): Single<Joke> {
+        currentJoke++
+        return Single.just(jokes[currentJoke])
+      }
+    }
+    declareMock<Repository> {
+      whenever(getJoke())
+          .thenAnswer(jokeQueueAnswer)
+    }
+    ActivityScenario.launch(MainActivity::class.java)
+    
     onView(withId(R.id.buttonNewJoke))
         .perform(click())
     onView(withId(R.id.textJoke))
