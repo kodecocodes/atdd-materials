@@ -75,7 +75,7 @@ class SearchForCompanionFragment : Fragment() {
     view?.findViewById<MaterialButton>(R.id.searchButton)?.setOnClickListener {
       try {
         val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-        inputMethodManager!!.hideSoftInputFromWindow(activity?.getCurrentFocus()?.getWindowToken(), 0)
+        inputMethodManager!!.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
       } catch (e: Exception) {
         // only happens when the keyboard is already closed
       }
@@ -84,8 +84,6 @@ class SearchForCompanionFragment : Fragment() {
 
     super.onActivityCreated(savedInstanceState)
   }
-
-
 
   private fun searchForCompanions() {
     val companionLocation = view?.findViewById<TextInputEditText>(R.id.searchFieldText)?.text.toString()
@@ -97,9 +95,7 @@ class SearchForCompanionFragment : Fragment() {
       (activity as MainActivity).petFinderService?.let { petFinderService ->
         // increment the IdlingResources
         EventBus.getDefault().post(IdlingEntity(1))
-        val getAnimalsRequest = petFinderService.getAnimals(accessToken, location = companionLocation)
-
-        val searchForPetResponse = getAnimalsRequest.await()
+        val searchForPetResponse = petFinderService.getAnimals(accessToken, location = companionLocation)
 
         if (searchForPetResponse.isSuccessful) {
           searchForPetResponse.body()?.let {

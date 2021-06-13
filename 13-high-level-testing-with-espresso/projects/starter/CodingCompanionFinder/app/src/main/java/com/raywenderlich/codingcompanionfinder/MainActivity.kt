@@ -35,7 +35,6 @@ import android.os.Bundle
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.raywenderlich.codingcompanionfinder.models.Token
 import com.raywenderlich.codingcompanionfinder.retrofit.AuthorizationInterceptor
 import com.raywenderlich.codingcompanionfinder.retrofit.PetFinderService
@@ -74,7 +73,6 @@ class MainActivity : AppCompatActivity() {
       petFinderService = Retrofit.Builder()
           .baseUrl("https://api.petfinder.com/v2/")
           .addConverterFactory(GsonConverterFactory.create())
-          .addCallAdapterFactory(CoroutineCallAdapterFactory())
           .client(client)
           .build().create(PetFinderService::class.java)
     }

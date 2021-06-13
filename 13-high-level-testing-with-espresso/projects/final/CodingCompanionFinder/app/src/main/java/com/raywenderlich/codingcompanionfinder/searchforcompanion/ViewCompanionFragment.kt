@@ -43,7 +43,6 @@ import com.raywenderlich.codingcompanionfinder.GlideApp
 import com.raywenderlich.codingcompanionfinder.R
 import com.raywenderlich.codingcompanionfinder.models.Animal
 import com.synnapps.carouselview.CarouselView
-import com.synnapps.carouselview.ViewListener
 
 class ViewCompanionFragment : Fragment() {
 
@@ -92,22 +91,19 @@ class ViewCompanionFragment : Fragment() {
   private fun populatePhotos() {
     petPhotos = ArrayList()
     animal.photos.forEach { photo ->
-        petPhotos.add(photo.full)
+      petPhotos.add(photo.full)
     }
 
     view?.let {
       petCaroselView = it.findViewById(R.id.petCarouselView)
-      petCaroselView.setViewListener(object : ViewListener {
-
-        override fun setViewForPosition(position: Int): View {
-          val carouselItemView = layoutInflater.inflate(R.layout.companion_photo_layout, null)
-          val imageView = carouselItemView.findViewById<ImageView>(R.id.petImage)
-          GlideApp.with(viewCompanionFragment).load(petPhotos[position])
-              .fitCenter()
-              .into(imageView)
-          return carouselItemView
-        }
-      })
+      petCaroselView.setViewListener { position ->
+        val carouselItemView = layoutInflater.inflate(R.layout.companion_photo_layout, null)
+        val imageView = carouselItemView.findViewById<ImageView>(R.id.petImage)
+        GlideApp.with(viewCompanionFragment).load(petPhotos[position])
+          .fitCenter()
+          .into(imageView)
+        carouselItemView
+      }
       petCaroselView.pageCount = petPhotos.size
     }
   }

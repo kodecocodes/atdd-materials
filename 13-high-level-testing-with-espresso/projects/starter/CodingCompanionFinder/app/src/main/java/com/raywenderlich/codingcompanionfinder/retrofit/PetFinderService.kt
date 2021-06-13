@@ -46,9 +46,9 @@ interface PetFinderService {
       @Field("client_secret") clientSecret: String): Call<Token>
 
   @GET("animals")
-  fun getAnimals(
+  suspend fun getAnimals(
       @Header("Authorization")  accessToken: String,
       @Query("limit") limit: Int = 20,
       @Query("location") location: String? = null
-  ) : Deferred<Response<AnimalResult>>
+  ) : Response<AnimalResult>
 }

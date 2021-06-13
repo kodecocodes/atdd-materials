@@ -51,7 +51,7 @@ class AuthorizationInterceptor(private val mainActivity: MainActivity) : Interce
         val tokenRequest = petFinderService.getToken(clientId = mainActivity.apiKey, clientSecret = mainActivity.apiSecret)
         val tokenResponse = tokenRequest.execute()
 
-        if (tokenResponse.isSuccessful()) {
+        if (tokenResponse.isSuccessful) {
           // login request succeeded, new token generated
           // save the new token
           // retry the 'mainRequest' which encountered an authentication error
