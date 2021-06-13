@@ -53,7 +53,7 @@ class AuthorizationInterceptor : Interceptor, KoinComponent {
       val tokenRequest = petFinderService.getToken(clientId =
       MainActivity.API_KEY, clientSecret = MainActivity.API_SECRET)
       val tokenResponse = tokenRequest.execute()
-      if (tokenResponse.isSuccessful()) {
+      if (tokenResponse.isSuccessful) {
         tokenResponse.body()?.let {
           token = it
           val builder =

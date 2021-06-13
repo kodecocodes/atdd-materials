@@ -101,7 +101,7 @@ class FindCompanionInstrumentedTest: KoinTest {
 
   private fun loadKoinTestModules() {
     loadKoinModules(module(override = true) {
-      single<String>(named(PETFINDER_URL)){server.url("").toString()}
+      single(named(PETFINDER_URL)){server.url("").toString()}
     })
   }
 

@@ -30,7 +30,6 @@
 
 package com.raywenderlich.codingcompanionfinder.searchforcompanion
 
-import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView

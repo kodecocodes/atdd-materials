@@ -97,17 +97,14 @@ class ViewCompanionFragment : Fragment() {
 
     view?.let {
       petCaroselView = it.findViewById(R.id.petCarouselView)
-      petCaroselView.setViewListener(object : ViewListener {
-
-        override fun setViewForPosition(position: Int): View {
-          val carouselItemView = layoutInflater.inflate(R.layout.companion_photo_layout, null)
-          val imageView = carouselItemView.findViewById<ImageView>(R.id.petImage)
-          GlideApp.with(viewCompanionFragment).load(petPhotos[position])
-              .fitCenter()
-              .into(imageView)
-          return carouselItemView
-        }
-      })
+      petCaroselView.setViewListener { position ->
+        val carouselItemView = layoutInflater.inflate(R.layout.companion_photo_layout, null)
+        val imageView = carouselItemView.findViewById<ImageView>(R.id.petImage)
+        GlideApp.with(viewCompanionFragment).load(petPhotos[position])
+          .fitCenter()
+          .into(imageView)
+        carouselItemView
+      }
       petCaroselView.pageCount = petPhotos.size
     }
   }
