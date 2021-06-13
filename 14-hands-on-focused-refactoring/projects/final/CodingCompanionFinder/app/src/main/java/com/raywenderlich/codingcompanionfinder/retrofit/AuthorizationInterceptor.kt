@@ -34,8 +34,8 @@ import com.raywenderlich.codingcompanionfinder.MainActivity
 import com.raywenderlich.codingcompanionfinder.models.Token
 import okhttp3.Interceptor
 import okhttp3.Response
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import java.io.IOException
 
 // 1

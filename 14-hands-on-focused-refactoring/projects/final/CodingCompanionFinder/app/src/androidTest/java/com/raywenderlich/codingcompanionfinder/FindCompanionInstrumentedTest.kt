@@ -54,9 +54,9 @@ import org.junit.runner.RunWith
 
 import org.junit.Before
 import org.junit.BeforeClass
-import org.koin.dsl.module.module
-import org.koin.standalone.StandAloneContext.loadKoinModules
-import org.koin.standalone.StandAloneContext.stopKoin
+import org.koin.core.context.loadKoinModules
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
 import org.koin.test.KoinTest
 
 /**
@@ -101,8 +101,8 @@ class FindCompanionInstrumentedTest: KoinTest {
 
   private fun loadKoinTestModules() {
     loadKoinModules(module(override = true) {
-      single<String>(name = PETFINDER_URL){server.url("").toString()}
-    }, appModule)
+      single<String>(named(PETFINDER_URL)){server.url("").toString()}
+    })
   }
 
   @Subscribe
@@ -113,7 +113,6 @@ class FindCompanionInstrumentedTest: KoinTest {
   @Before
   fun beforeTestsRun() {
     testScenario = ActivityScenario.launch(startIntent)
-    stopKoin()
     loadKoinTestModules()
     EventBus.getDefault().register(this)
     IdlingRegistry.getInstance().register(idlingResource)
@@ -124,7 +123,6 @@ class FindCompanionInstrumentedTest: KoinTest {
     // eventbus and idling resources unregister.
     IdlingRegistry.getInstance().unregister(idlingResource)
     EventBus.getDefault().unregister(this)
-    stopKoin()
     testScenario.close()
   }
 

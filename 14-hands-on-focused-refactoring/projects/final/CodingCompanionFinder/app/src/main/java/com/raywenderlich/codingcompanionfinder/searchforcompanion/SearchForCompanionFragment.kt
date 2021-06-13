@@ -117,7 +117,7 @@ class SearchForCompanionFragment : Fragment() {
           adapter = companionAdapter
         }
 // 3
-    searchForCompanionViewModel.animals.observe(this,
+    searchForCompanionViewModel.animals.observe(viewLifecycleOwner,
         Observer<ArrayList<Animal>?> {
           companionAdapter.animals = it ?: arrayListOf()
           companionAdapter.notifyDataSetChanged()
