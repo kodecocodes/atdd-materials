@@ -43,7 +43,6 @@ import com.raywenderlich.codingcompanionfinder.GlideApp
 import com.raywenderlich.codingcompanionfinder.R
 import com.raywenderlich.codingcompanionfinder.models.Animal
 import com.synnapps.carouselview.CarouselView
-import com.synnapps.carouselview.ViewListener
 
 class ViewCompanionFragment : Fragment() {
 
@@ -57,8 +56,8 @@ class ViewCompanionFragment : Fragment() {
   private lateinit var viewCompanionFragment: ViewCompanionFragment
 
   override fun onCreateView(
-      inflater: LayoutInflater, container: ViewGroup?,
-      savedInstanceState: Bundle?
+    inflater: LayoutInflater, container: ViewGroup?,
+    savedInstanceState: Bundle?
   ): View? {
     // Inflate the layout for this fragment
     animal = arguments?.getSerializable(ANIMAL) as Animal
@@ -74,8 +73,8 @@ class ViewCompanionFragment : Fragment() {
   private fun populatePet() {
     populateTextField(R.id.petName, animal.name)
     populateTextField(
-        R.id.city,
-        animal.contact.address.city + ", " + animal.contact.address.state
+      R.id.city,
+      animal.contact.address.city + ", " + animal.contact.address.state
     )
     populateTextField(R.id.age, animal.age)
     populateTextField(R.id.sex, animal.gender)
@@ -92,7 +91,7 @@ class ViewCompanionFragment : Fragment() {
   private fun populatePhotos() {
     petPhotos = ArrayList()
     animal.photos.forEach { photo ->
-        petPhotos.add(photo.full)
+      petPhotos.add(photo.full)
     }
 
     view?.let {

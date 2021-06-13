@@ -85,8 +85,6 @@ class SearchForCompanionFragment : Fragment() {
     super.onActivityCreated(savedInstanceState)
   }
 
-
-
   private fun searchForCompanions() {
     val companionLocation = view?.findViewById<TextInputEditText>(R.id.searchFieldText)?.text.toString()
     val noResultsTextView = view?.findViewById<TextView>(R.id.noResults)
@@ -97,9 +95,7 @@ class SearchForCompanionFragment : Fragment() {
       (activity as MainActivity).petFinderService?.let { petFinderService ->
         // increment the IdlingResources
         EventBus.getDefault().post(IdlingEntity(1))
-        val getAnimalsRequest = petFinderService.getAnimals(accessToken, location = companionLocation)
-
-        val searchForPetResponse = getAnimalsRequest.await()
+        val searchForPetResponse = petFinderService.getAnimals(accessToken, location = companionLocation)
 
         if (searchForPetResponse.isSuccessful) {
           searchForPetResponse.body()?.let {

@@ -60,6 +60,7 @@ class AuthorizationInterceptor : Interceptor, KoinComponent {
             mainRequest.newBuilder().header("Authorization", "Bearer " +
                 it.accessToken)
               .method(mainRequest.method(), mainRequest.body())
+          mainResponse.close()
           mainResponse = chain.proceed(builder.build())
         } }
     }

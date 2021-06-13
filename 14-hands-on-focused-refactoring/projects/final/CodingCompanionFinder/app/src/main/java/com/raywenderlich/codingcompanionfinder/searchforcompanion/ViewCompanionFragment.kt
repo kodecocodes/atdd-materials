@@ -37,7 +37,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.raywenderlich.codingcompanionfinder.GlideApp
 
@@ -45,7 +45,6 @@ import com.raywenderlich.codingcompanionfinder.R
 import com.raywenderlich.codingcompanionfinder.databinding.FragmentViewCompanionBinding
 import com.raywenderlich.codingcompanionfinder.models.Animal
 import com.synnapps.carouselview.CarouselView
-import com.synnapps.carouselview.ViewListener
 
 class ViewCompanionFragment : Fragment() {
 
@@ -68,7 +67,7 @@ class ViewCompanionFragment : Fragment() {
         // 1
         val fragmentViewCompanionBinding = FragmentViewCompanionBinding.inflate(inflater, container, false)
         // 2
-        val viewCompanionViewModel = ViewModelProviders.of(this).get(ViewCompanionViewModel::class.java)
+        val viewCompanionViewModel = ViewModelProvider(this).get(ViewCompanionViewModel::class.java)
 // 3
         viewCompanionViewModel.populateFromAnimal(animal)
 // 4

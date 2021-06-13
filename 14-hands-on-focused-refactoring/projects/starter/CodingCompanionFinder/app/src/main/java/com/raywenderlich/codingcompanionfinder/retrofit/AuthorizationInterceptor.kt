@@ -60,6 +60,7 @@ class AuthorizationInterceptor(private val mainActivity: MainActivity) : Interce
             mainActivity.token = it
             val builder = mainRequest.newBuilder().header("Authorization", "Bearer " + it.accessToken)
                 .method(mainRequest.method(), mainRequest.body())
+            mainResponse.close()
             mainResponse = chain.proceed(builder.build())
           }
         }

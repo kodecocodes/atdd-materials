@@ -43,7 +43,6 @@ import com.raywenderlich.codingcompanionfinder.MainActivity
 import com.raywenderlich.codingcompanionfinder.R
 import com.raywenderlich.codingcompanionfinder.models.Animal
 import com.synnapps.carouselview.CarouselView
-import com.synnapps.carouselview.ViewListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -70,8 +69,7 @@ class RandomCompanionFragment : Fragment() {
       key = (activity as MainActivity).accessToken
       (activity as MainActivity).petFinderService?.let { petFinderService ->
 
-        val animalsRequest = petFinderService.getAnimals((activity as MainActivity).accessToken, 1)
-        val animalsResponse = animalsRequest.await()
+        val animalsResponse = petFinderService.getAnimals((activity as MainActivity).accessToken, 1)
         if (animalsResponse.isSuccessful) {
           animalsResponse.body()?.let {animalResult ->
             if (animalResult.animals.size > 0) {

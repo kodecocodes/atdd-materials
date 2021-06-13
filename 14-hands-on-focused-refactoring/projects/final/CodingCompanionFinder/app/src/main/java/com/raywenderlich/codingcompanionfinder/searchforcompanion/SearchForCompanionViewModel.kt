@@ -55,12 +55,10 @@ class SearchForCompanionViewModel(val petFinderService: PetFinderService): ViewM
 
       EventBus.getDefault().post(IdlingEntity(1))
 // 2
-      val getAnimalsRequest = petFinderService.getAnimals(
+      val searchForPetResponse = petFinderService.getAnimals(
           accessToken,
           location = companionLocation.value
       )
-
-      val searchForPetResponse = getAnimalsRequest.await()
 
       GlobalScope.launch(Dispatchers.Main) {
         if (searchForPetResponse.isSuccessful) {
