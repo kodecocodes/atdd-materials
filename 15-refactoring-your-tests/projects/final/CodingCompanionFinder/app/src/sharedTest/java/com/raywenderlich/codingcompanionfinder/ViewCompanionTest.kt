@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,9 +31,8 @@ package com.raywenderlich.codingcompanionfinder
 
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.raywenderlich.codingcompanionfinder.models.Address
 import com.raywenderlich.codingcompanionfinder.models.Animal
@@ -41,14 +40,18 @@ import com.raywenderlich.codingcompanionfinder.models.Breeds
 import com.raywenderlich.codingcompanionfinder.models.Contact
 import com.raywenderlich.codingcompanionfinder.searchforcompanion.ViewCompanionFragment
 import com.raywenderlich.codingcompanionfinder.searchforcompanion.ViewCompanionFragmentArgs
+import org.robolectric.annotation.LooperMode
+import org.junit.runner.RunWith
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.annotation.LooperMode
+
+import org.junit.BeforeClass
+import java.util.regex.Pattern.matches
 
 @RunWith(AndroidJUnit4::class)
 @LooperMode(LooperMode.Mode.PAUSED)
 class ViewCompanionTest {
+
   @Before
   fun beforeTestsRun() {
 // 1
@@ -74,13 +77,9 @@ class ViewCompanionTest {
       "male",
       "A sweet little guy with spikey teeth!"
     )
-// 2
     val bundle = ViewCompanionFragmentArgs(animal).toBundle()
-// 3
-    launchFragmentInContainer<ViewCompanionFragment>(
-      bundle,
-      R.style.AppTheme
-    )
+    launchFragmentInContainer<ViewCompanionFragment>(bundle,
+      R.style.AppTheme)
   }
 
   @Test
@@ -91,8 +90,10 @@ class ViewCompanionTest {
     onView(withText("5")).check(matches(isDisplayed()))
     onView(withText("male")).check(matches(isDisplayed()))
     onView(withText("small")).check(matches(isDisplayed()))
-    onView(withText("A sweet little guy with spikey teeth!")).check(matches(isDisplayed()))
-        onView(withText("404-867-5309")).check(matches(isDisplayed()))
-        onView(withText("coding.companion@razware.com")).check(matches(isDisplayed()))
+    onView(withText("A sweet little guy with spikey teeth!"))
+      .check(matches(isDisplayed()))
+    onView(withText("404-867-5309")).check(matches(isDisplayed()))
+    onView(withText("coding.companion@razware.com"))
+      .check(matches(isDisplayed()))
   }
 }

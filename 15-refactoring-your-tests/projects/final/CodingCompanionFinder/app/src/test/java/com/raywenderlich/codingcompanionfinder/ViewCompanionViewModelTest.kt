@@ -28,45 +28,43 @@
  * THE SOFTWARE.
  */
 
-package com.raywenderlich.codingcompanionfinder.searchforcompanion
+package com.raywenderlich.codingcompanionfinder
 
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
-import androidx.recyclerview.widget.RecyclerView
-import com.raywenderlich.codingcompanionfinder.GlideApp
-import com.raywenderlich.codingcompanionfinder.R
+import com.raywenderlich.codingcompanionfinder.models.Address
 import com.raywenderlich.codingcompanionfinder.models.Animal
+import com.raywenderlich.codingcompanionfinder.models.Breeds
+import com.raywenderlich.codingcompanionfinder.models.Contact
+import com.raywenderlich.codingcompanionfinder.searchforcompanion.ViewCompanionViewModel
+import org.junit.Test
 
-class CompanionViewHolder(val view: View, val fragment: Fragment) : RecyclerView.ViewHolder(view) {
+import org.junit.Assert.*
 
-  fun populatePet(animal: Animal) {
-    populateTextField(R.id.name, animal.name)
-    populateTextField(R.id.sex, animal.gender)
-    populateTextField(R.id.breed, animal.breeds.primary)
-    animal.photos?.let {
-      if (it.size > 0) {
-        val imageView = view.findViewById<ImageView>(R.id.petImage)
-        GlideApp.with(view.context).load(it[0].full)
-            .fitCenter()
-            .into(imageView)
-      }
-    }
-
-    setupClickEvent(animal)
+class ViewCompanionViewModelTest {
+  val animal = Animal(
+    22,
+    Contact(
+      phone = "404-867-5309",
+      email = "coding.companion@razware.com",
+      address = Address(
+        "",
+        "",
+        "Atlanta",
+        "GA",
+        "30303",
+        "USA"
+      ) ),
+    "5",
+    "small",
+    arrayListOf(),
+    Breeds("shih tzu", "", false, false),
+    "Spike",
+    "male",
+    "A sweet little guy with spikey teeth!"
+  )
+  @Test
+  fun populateFromAnimal_sets_the_animals_name_to_the_view_model(){
+    val viewCompanionViewModel = ViewCompanionViewModel()
+    viewCompanionViewModel.populateFromAnimal(animal)
+    assert(viewCompanionViewModel.name.equals("Spike"))
   }
-
-  private fun populateTextField(id: Int, stringValue: String) {
-    (view.findViewById(id) as TextView).text = stringValue
-  }
-
-  private fun setupClickEvent(animal: Animal){
-    view.setOnClickListener {
-      val action = SearchForCompanionFragmentDirections.actionSearchForCompanionFragmentToViewCompanion(animal)
-              view.findNavController().navigate(action)
-    }
-  }
-
 }

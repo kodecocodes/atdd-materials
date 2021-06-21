@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,8 +34,8 @@ import com.raywenderlich.codingcompanionfinder.MainActivity
 import com.raywenderlich.codingcompanionfinder.models.Token
 import okhttp3.Interceptor
 import okhttp3.Response
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import java.io.IOException
 
 // 1
@@ -53,13 +53,14 @@ class AuthorizationInterceptor : Interceptor, KoinComponent {
       val tokenRequest = petFinderService.getToken(clientId =
       MainActivity.API_KEY, clientSecret = MainActivity.API_SECRET)
       val tokenResponse = tokenRequest.execute()
-      if (tokenResponse.isSuccessful()) {
+      if (tokenResponse.isSuccessful) {
         tokenResponse.body()?.let {
           token = it
           val builder =
             mainRequest.newBuilder().header("Authorization", "Bearer " +
                 it.accessToken)
               .method(mainRequest.method(), mainRequest.body())
+          mainResponse.close()
           mainResponse = chain.proceed(builder.build())
         } }
     }
