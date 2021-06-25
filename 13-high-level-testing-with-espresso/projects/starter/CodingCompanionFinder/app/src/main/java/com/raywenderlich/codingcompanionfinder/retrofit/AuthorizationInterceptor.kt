@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -51,7 +51,7 @@ class AuthorizationInterceptor(private val mainActivity: MainActivity) : Interce
         val tokenRequest = petFinderService.getToken(clientId = mainActivity.apiKey, clientSecret = mainActivity.apiSecret)
         val tokenResponse = tokenRequest.execute()
 
-        if (tokenResponse.isSuccessful()) {
+        if (tokenResponse.isSuccessful) {
           // login request succeeded, new token generated
           // save the new token
           // retry the 'mainRequest' which encountered an authentication error
@@ -60,6 +60,7 @@ class AuthorizationInterceptor(private val mainActivity: MainActivity) : Interce
             mainActivity.token = it
             val builder = mainRequest.newBuilder().header("Authorization", "Bearer " + it.accessToken)
                 .method(mainRequest.method(), mainRequest.body())
+            mainResponse.close()
             mainResponse = chain.proceed(builder.build())
           }
         }

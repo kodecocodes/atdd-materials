@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -73,7 +73,7 @@ class SearchForCompanionFragment : Fragment() {
     view?.findViewById<MaterialButton>(R.id.searchButton)?.setOnClickListener {
       try {
         val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-        inputMethodManager!!.hideSoftInputFromWindow(activity?.getCurrentFocus()?.getWindowToken(), 0)
+        inputMethodManager!!.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
       } catch (e: Exception) {
         // only happens when the keyboard is already closed
       }
@@ -93,9 +93,8 @@ class SearchForCompanionFragment : Fragment() {
     GlobalScope.launch {
       accessToken = (activity as MainActivity).accessToken
       (activity as MainActivity).petFinderService?.let { petFinderService ->
-        val getAnimalsRequest = petFinderService.getAnimals(accessToken, location = companionLocation)
+        val searchForPetResponse = petFinderService.getAnimals(accessToken, location = companionLocation)
 
-        val searchForPetResponse = getAnimalsRequest.await()
         if (searchForPetResponse.isSuccessful) {
           searchForPetResponse.body()?.let {
             GlobalScope.launch(Dispatchers.Main) {
