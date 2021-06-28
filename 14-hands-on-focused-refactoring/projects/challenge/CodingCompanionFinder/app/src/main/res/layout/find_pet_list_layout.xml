@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+  <data>
+
+    <variable
+      name="companionViewModel"
+      type="com.raywenderlich.codingcompanionfinder.searchforcompanion.CompanionViewModel" />
+  </data>
+
+  <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+      android:layout_width="0dp"
+      android:layout_height="0.5dp"
+      android:background="@android:color/black"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+      android:id="@+id/petImage"
+      android:layout_width="0dp"
+      android:layout_height="100dp"
+      android:paddingTop="5dp"
+      android:paddingBottom="5dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@id/photoGuideline"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/photoGuideline"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_percent=".3" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@{companionViewModel.name}"
+      android:textSize="18sp"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toTopOf="@id/sex"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/photoGuideline"
+      app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/sex"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingStart="10dp"
+      android:text="@{companionViewModel.sex}"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@+id/breed"
+      app:layout_constraintHorizontal_chainStyle="spread_inside"
+      app:layout_constraintStart_toEndOf="@id/photoGuideline"
+      app:layout_constraintTop_toBottomOf="@id/name" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/breed"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:paddingStart="10dp"
+      android:paddingEnd="10dp"
+      android:text="@{companionViewModel.breed}"
+      app:layout_constraintBottom_toBottomOf="@+id/sex"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/sex"
+      app:layout_constraintTop_toTopOf="@id/sex" />
+
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

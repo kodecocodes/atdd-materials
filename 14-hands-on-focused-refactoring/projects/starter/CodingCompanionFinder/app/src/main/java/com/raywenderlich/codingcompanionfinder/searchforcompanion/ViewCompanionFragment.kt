@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +43,6 @@ import com.raywenderlich.codingcompanionfinder.GlideApp
 import com.raywenderlich.codingcompanionfinder.R
 import com.raywenderlich.codingcompanionfinder.models.Animal
 import com.synnapps.carouselview.CarouselView
-import com.synnapps.carouselview.ViewListener
 
 class ViewCompanionFragment : Fragment() {
 
@@ -57,8 +56,8 @@ class ViewCompanionFragment : Fragment() {
   private lateinit var viewCompanionFragment: ViewCompanionFragment
 
   override fun onCreateView(
-      inflater: LayoutInflater, container: ViewGroup?,
-      savedInstanceState: Bundle?
+    inflater: LayoutInflater, container: ViewGroup?,
+    savedInstanceState: Bundle?
   ): View? {
     // Inflate the layout for this fragment
     animal = arguments?.getSerializable(ANIMAL) as Animal
@@ -74,8 +73,8 @@ class ViewCompanionFragment : Fragment() {
   private fun populatePet() {
     populateTextField(R.id.petName, animal.name)
     populateTextField(
-        R.id.city,
-        animal.contact.address.city + ", " + animal.contact.address.state
+      R.id.city,
+      animal.contact.address.city + ", " + animal.contact.address.state
     )
     populateTextField(R.id.age, animal.age)
     populateTextField(R.id.sex, animal.gender)
@@ -92,22 +91,19 @@ class ViewCompanionFragment : Fragment() {
   private fun populatePhotos() {
     petPhotos = ArrayList()
     animal.photos.forEach { photo ->
-        petPhotos.add(photo.full)
+      petPhotos.add(photo.full)
     }
 
     view?.let {
       petCaroselView = it.findViewById(R.id.petCarouselView)
-      petCaroselView.setViewListener(object : ViewListener {
-
-        override fun setViewForPosition(position: Int): View {
-          val carouselItemView = layoutInflater.inflate(R.layout.companion_photo_layout, null)
-          val imageView = carouselItemView.findViewById<ImageView>(R.id.petImage)
-          GlideApp.with(viewCompanionFragment).load(petPhotos[position])
-              .fitCenter()
-              .into(imageView)
-          return carouselItemView
-        }
-      })
+      petCaroselView.setViewListener { position ->
+        val carouselItemView = layoutInflater.inflate(R.layout.companion_photo_layout, null)
+        val imageView = carouselItemView.findViewById<ImageView>(R.id.petImage)
+        GlideApp.with(viewCompanionFragment).load(petPhotos[position])
+          .fitCenter()
+          .into(imageView)
+        carouselItemView
+      }
       petCaroselView.pageCount = petPhotos.size
     }
   }
