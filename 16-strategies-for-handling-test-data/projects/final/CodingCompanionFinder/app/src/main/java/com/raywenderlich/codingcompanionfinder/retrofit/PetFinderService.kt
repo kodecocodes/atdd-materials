@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,6 @@
 package com.raywenderlich.codingcompanionfinder.retrofit
 
 import com.raywenderlich.codingcompanionfinder.models.*
-import kotlinx.coroutines.Deferred
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -46,9 +45,9 @@ interface PetFinderService {
       @Field("client_secret") clientSecret: String): Call<Token>
 
   @GET("animals")
-  fun getAnimals(
+  suspend fun getAnimals(
       @Header("Authorization")  accessToken: String,
       @Query("limit") limit: Int = 20,
       @Query("location") location: String? = null
-  ) : Deferred<Response<AnimalResult>>
+  ) : Response<AnimalResult>
 }

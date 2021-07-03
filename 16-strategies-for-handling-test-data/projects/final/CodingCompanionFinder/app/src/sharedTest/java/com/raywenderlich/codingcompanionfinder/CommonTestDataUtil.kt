@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,37 +39,40 @@ object CommonTestDataUtil {
 
   fun dispatch(request: RecordedRequest): MockResponse? {
     val headers = request.headers
-// 1
-    if (request.method.equals("POST")) {
-      if (request.path.equals("/oauth2/token")) {
+    // 1
+    if(request.method.equals("POST")){
+      if(request.path.equals("/oauth2/token")){
         return MockResponse().setResponseCode(200).setBody(
-          "{\"access_token\":\"valid_token\"}"
-        )
+          "{\"access_token\":\"valid_token\"}")
       }
     }
-// 2
+    // 2
     val authorization = headers.values("Authorization")
-    if (!authorization.isEmpty() && authorization.get(0).equals("Bearer valid_token")) {
+    if (!authorization.isEmpty() &&
+      authorization.get(0).equals("Bearer valid_token")) {
       return when (request.path) {
         "/animals?limit=20&location=30318" -> {
           MockResponse().setResponseCode(200).setBody(
-            readFile("search_30318.json")
+            CommonTestDataUtil.readFile("search_30318.json")
           )
         }
         "/animals?limit=20&location=90210" -> {
-          MockResponse().setResponseCode(200).setBody("{\"animals\": []}")
+          MockResponse().setResponseCode(200)
+            .setBody("{\"animals\": []}")
         }
         else -> {
           MockResponse().setResponseCode(404).setBody("{}")
         }
       }
     } else {
-// 3
+      // 3
       return MockResponse().setResponseCode(401).setBody("{}")
     }
   }
 
-  fun nonInterceptedDispatch(request: RecordedRequest): MockResponse? {
+  fun nonInterceptedDispatch(
+    request: RecordedRequest
+  ): MockResponse? {
     val headers = request.headers
     return when (request.path) {
       "/animals?limit=20&location=30318" -> {
@@ -78,7 +81,8 @@ object CommonTestDataUtil {
         )
       }
       "/animals?limit=20&location=90210" -> {
-        MockResponse().setResponseCode(200).setBody("{\"animals\": []}")
+        MockResponse().setResponseCode(200)
+          .setBody("{\"animals\": []}")
       }
       else -> {
         MockResponse().setResponseCode(404).setBody("{}")
@@ -88,11 +92,14 @@ object CommonTestDataUtil {
 
   @Throws(IOException::class)
   fun readFile(jsonFileName: String): String {
-    val inputStream = this::class.java.getResourceAsStream("/$jsonFileName")
-      ?: throw NullPointerException(
-        "Have you added the local resource correctly?, "
-            + "Hint: name it as: " + jsonFileName
-      )
+    val inputStream = this::class.java
+      .getResourceAsStream("/assets/$jsonFileName") ?:
+    this::class.java
+      .getResourceAsStream("/$jsonFileName")
+        ?: throw NullPointerException(
+            "Have you added the local resource correctly?, "
+                + "Hint: name it as: " + jsonFileName
+        )
     val stringBuilder = StringBuilder()
     var inputStreamReader: InputStreamReader? = null
     try {
