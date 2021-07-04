@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -55,12 +55,10 @@ class SearchForCompanionViewModel(val petFinderService: PetFinderService): ViewM
 
       EventBus.getDefault().post(IdlingEntity(1))
 // 2
-      val getAnimalsRequest = petFinderService.getAnimals(
+      val searchForPetResponse = petFinderService.getAnimals(
           accessToken,
           location = companionLocation.value
       )
-
-      val searchForPetResponse = getAnimalsRequest.await()
 
       GlobalScope.launch(Dispatchers.Main) {
         if (searchForPetResponse.isSuccessful) {
