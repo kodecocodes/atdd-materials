@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,6 @@ import android.os.Bundle
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.raywenderlich.codingcompanionfinder.retrofit.AuthorizationInterceptor
 import com.raywenderlich.codingcompanionfinder.retrofit.PetFinderService
 import com.raywenderlich.codingcompanionfinder.testhooks.IdlingEntity
@@ -72,7 +71,6 @@ class MainActivity : AppCompatActivity() {
       petFinderService = Retrofit.Builder()
         .baseUrl(baseUrl)
         .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .client(client)
         .build().create(PetFinderService::class.java)
     }
@@ -110,8 +108,8 @@ class MainActivity : AppCompatActivity() {
   companion object {
     val PETFINDER_URI = "petfinder_uri"
     val PETFINDER_KEY = "petfinder_key"
-    val API_KEY = "your_key"
-    val API_SECRET = "your_secret"
+    val API_KEY = "cw8aUgMwA4C2QdPIBVjNbnrcJcZE7iChB2Vf4bIoe2aAOZ4Dlm"
+    val API_SECRET = "k9JN0gqXzQz6tIuCeHO5U1rHk0HVLXwBns1gQcuD"
     val DEFAULT_PETFINDER_URL = "https://api.petfinder.com/v2/"
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,8 @@
 
 package com.raywenderlich.codingcompanionfinder
 
+import android.app.Activity
+import android.app.Instrumentation
 import android.content.Intent
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
@@ -38,8 +40,14 @@ import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.Intents.intended
+import androidx.test.espresso.intent.Intents.intending
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.rule.GrantPermissionRule
 import com.raywenderlich.codingcompanionfinder.testhooks.IdlingEntity
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
@@ -47,17 +55,23 @@ import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.hamcrest.CoreMatchers.allOf
 import org.junit.After
 
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.junit.Rule
 
 import org.junit.Before
 import org.junit.BeforeClass
-import org.koin.dsl.module.module
-import org.koin.standalone.StandAloneContext.loadKoinModules
-import org.koin.standalone.StandAloneContext.stopKoin
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
+import org.koin.test.AutoCloseKoinTest
 import org.koin.test.KoinTest
+import org.robolectric.annotation.LooperMode
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -65,16 +79,20 @@ import org.koin.test.KoinTest
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @RunWith(AndroidJUnit4::class)
-class FindCompanionInstrumentedTest: KoinTest {
+@LooperMode(LooperMode.Mode.PAUSED)
+class FindCompanionInstrumentedTest: AutoCloseKoinTest() {
+
+  @get:Rule
+  val grantPermissionRule: GrantPermissionRule =
+    GrantPermissionRule.grant(
+      android.Manifest.permission.CALL_PHONE)
 
   lateinit var testScenario: ActivityScenario<MainActivity>
 
   private val idlingResource = SimpleIdlingResource()
 
   companion object {
-    // 1
     val server = MockWebServer()
-    // 2
     val dispatcher: Dispatcher = object : Dispatcher() {
       @Throws(InterruptedException::class)
       override fun dispatch(request: RecordedRequest): MockResponse {
@@ -89,20 +107,17 @@ class FindCompanionInstrumentedTest: KoinTest {
     @BeforeClass
     @JvmStatic
     fun setup() {
-// 3
       server.setDispatcher(dispatcher)
       server.start()
-// 3
-      startIntent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
-      startIntent.putExtra(MainActivity.PETFINDER_URI,
-          server.url("").toString())
     }
   }
 
   private fun loadKoinTestModules() {
-    loadKoinModules(module(override = true) {
-      single<String>(name = PETFINDER_URL){server.url("").toString()}
-    }, appModule)
+    stopKoin()
+    startKoin {  }
+    loadKoinModules(listOf(module(override = true) {
+      single(named(PETFINDER_URL)){server.url("").toString()}
+    }, appModule))
   }
 
   @Subscribe
@@ -112,9 +127,9 @@ class FindCompanionInstrumentedTest: KoinTest {
 
   @Before
   fun beforeTestsRun() {
-    testScenario = ActivityScenario.launch(startIntent)
-    stopKoin()
     loadKoinTestModules()
+    testScenario = ActivityScenario.launch(MainActivity::class.java)
+
     EventBus.getDefault().register(this)
     IdlingRegistry.getInstance().register(idlingResource)
   }
@@ -124,7 +139,6 @@ class FindCompanionInstrumentedTest: KoinTest {
     // eventbus and idling resources unregister.
     IdlingRegistry.getInstance().unregister(idlingResource)
     EventBus.getDefault().unregister(this)
-    stopKoin()
     testScenario.close()
   }
 
@@ -183,6 +197,28 @@ class FindCompanionInstrumentedTest: KoinTest {
     onView(withId(R.id.searchButton)).perform(click())
     onView(withId(R.id.searchButton)).check(matches(isDisplayed()))
     onView(withId(R.id.noResults)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+  }
+
+  @Test
+  fun verify_that_tapping_on_phone_number_dials_phone() {
+    // 1
+    Intents.init()
+    val intent = Intent()
+    val result =
+      Instrumentation.ActivityResult(Activity.RESULT_OK, intent)
+
+    intending(
+      allOf(
+        hasAction(Intent.ACTION_CALL)
+      )
+    ).respondWith(result)
+    // 2
+    find_and_select_kevin_in_30318()
+    onView(withText("(706) 236-4537")).perform(click())
+    // 3
+    intended(allOf(hasAction(Intent.ACTION_CALL),
+      hasData("tel:(706) 236-4537")))
+    Intents.release()
   }
 
   private fun find_and_select_kevin_in_30318() {

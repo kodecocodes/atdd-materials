@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,21 +27,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.raywenderlich.codingcompanionfinder
 
-import org.junit.Test
+import androidx.annotation.Nullable
+import androidx.test.espresso.IdlingResource
+import java.util.concurrent.atomic.AtomicInteger
 
-import org.junit.Assert.*
+class SimpleIdlingResource : IdlingResource {
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
-class ExampleUnitTest {
-  @Test
-  fun addition_isCorrect() {
-    assertEquals(4, 2 + 2)
+  @Nullable
+  @Volatile
+  private var callback: IdlingResource.ResourceCallback? = null
+
+  // Idleness is controlled with this boolean.
+  var activeResources = AtomicInteger(0)
+
+  override fun getName(): String {
+    return this.javaClass.name
+  }
+
+  override fun isIdleNow(): Boolean {
+    return activeResources.toInt() < 1
+  }
+
+  override fun registerIdleTransitionCallback(callback: IdlingResource.ResourceCallback) {
+    this.callback = callback
+  }
+
+  fun incrementBy(incrementValue: Int) {
+    if (activeResources.addAndGet(incrementValue) < 1 && callback != null) {
+      callback!!.onTransitionToIdle()
+    }
   }
 }

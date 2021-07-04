@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,11 +39,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.karumi.dexter.Dexter
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import com.raywenderlich.codingcompanionfinder.GlideApp
 
@@ -51,101 +54,98 @@ import com.raywenderlich.codingcompanionfinder.R
 import com.raywenderlich.codingcompanionfinder.databinding.FragmentViewCompanionBinding
 import com.raywenderlich.codingcompanionfinder.models.Animal
 import com.synnapps.carouselview.CarouselView
-import com.synnapps.carouselview.ViewListener
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionDeniedResponse
-import com.karumi.dexter.listener.PermissionGrantedResponse
-import com.karumi.dexter.listener.PermissionRequest
-
 
 class ViewCompanionFragment : Fragment() {
-  companion object {
-    val ANIMAL: String = "ANIMAL"
-  }
 
-  private lateinit var animal: Animal
-  private lateinit var petPhotos: ArrayList<String>
-  private lateinit var petCaroselView: CarouselView
-  private lateinit var viewCompanionFragment: ViewCompanionFragment
-  private lateinit var fragmentViewCompanionBinding: FragmentViewCompanionBinding
-  private lateinit var viewCompanionViewModel: ViewCompanionViewModel
+    companion object {
+        val ANIMAL: String = "ANIMAL"
+    }
 
-  val args: ViewCompanionFragmentArgs by navArgs()
-  override fun onCreateView(
-    inflater: LayoutInflater, container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View? {
-    animal = args.animal
-    viewCompanionFragment = this
-    // 1
-    fragmentViewCompanionBinding =
-      FragmentViewCompanionBinding.inflate(inflater, container, false)
-    // 2
-    viewCompanionViewModel = ViewModelProviders.of(this).get(ViewCompanionViewModel::class.java)
+    private lateinit var animal: Animal
+    private lateinit var petPhotos: ArrayList<String>
+    private lateinit var petCaroselView: CarouselView
+    private lateinit var viewCompanionFragment: ViewCompanionFragment
+    private lateinit var fragmentViewCompanionBinding: FragmentViewCompanionBinding
+    private lateinit var viewCompanionViewModel: ViewCompanionViewModel
+
+    val args: ViewCompanionFragmentArgs by navArgs()
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        animal = args.animal
+        viewCompanionFragment = this
+        // 1
+        fragmentViewCompanionBinding = FragmentViewCompanionBinding.inflate(inflater, container, false)
+        // 2
+        viewCompanionViewModel = ViewModelProvider(this).get(ViewCompanionViewModel::class.java)
 // 3
-    viewCompanionViewModel.populateFromAnimal(animal)
+        viewCompanionViewModel.populateFromAnimal(animal)
 // 4
-    fragmentViewCompanionBinding.viewCompanionViewModel =
-      viewCompanionViewModel
+        fragmentViewCompanionBinding.viewCompanionViewModel =
+            viewCompanionViewModel
 // 5
-
-    setupPhonNumberOnClick()
-    return fragmentViewCompanionBinding.root
-  }
-
-  override fun onResume() {
-    populatePhotos()
-    super.onResume()
-  }
-
-  private fun populatePhotos() {
-    petPhotos = ArrayList()
-    animal.photos.forEach { photo ->
-      petPhotos.add(photo.full)
+        setupPhonNumberOnClick()
+        return fragmentViewCompanionBinding.root
     }
 
-    view?.let {
-      petCaroselView = it.findViewById(R.id.petCarouselView)
-      petCaroselView.setViewListener(object : ViewListener {
+    override fun onResume() {
+        populatePhotos()
+        super.onResume()
+    }
 
-        override fun setViewForPosition(position: Int): View {
-          val carouselItemView = layoutInflater.inflate(R.layout.companion_photo_layout, null)
-          val imageView = carouselItemView.findViewById<ImageView>(R.id.petImage)
-          GlideApp.with(viewCompanionFragment).load(petPhotos[position])
-            .fitCenter()
-            .into(imageView)
-          return carouselItemView
+    private fun populatePhotos() {
+        petPhotos = ArrayList()
+        animal.photos.forEach { photo ->
+            petPhotos.add(photo.full)
         }
-      })
-      petCaroselView.pageCount = petPhotos.size
+
+        view?.let {
+            petCaroselView = it.findViewById(R.id.petCarouselView)
+            petCaroselView.setViewListener { position ->
+                val carouselItemView = layoutInflater.inflate(R.layout.companion_photo_layout, null)
+                val imageView = carouselItemView.findViewById<ImageView>(R.id.petImage)
+                GlideApp.with(viewCompanionFragment).load(petPhotos[position])
+                    .fitCenter()
+                    .into(imageView)
+                carouselItemView
+            }
+            petCaroselView.pageCount = petPhotos.size
+        }
     }
-  }
 
-  private fun setupPhonNumberOnClick(){
-    fragmentViewCompanionBinding.telephone.setOnClickListener {
-      Dexter.withActivity(activity)
-        .withPermission(Manifest.permission.CALL_PHONE)
-        .withListener(
-          object : PermissionListener {
-            override fun onPermissionGranted(response: PermissionGrantedResponse) {/* ... */
-              val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:" + viewCompanionViewModel.telephone))
-              startActivity(intent)
-            }
+    private fun setupPhonNumberOnClick(){
+        fragmentViewCompanionBinding.telephone.setOnClickListener {
+            // 1
+            Dexter.withActivity(activity)
+                .withPermission(Manifest.permission.CALL_PHONE)
+                .withListener(
+                    object : PermissionListener {
+                        // 3
+                        override fun onPermissionGranted(
+                            response: PermissionGrantedResponse
+                        ) {/* ... */
+                            val intent = Intent(Intent.ACTION_CALL, Uri.parse(
+                                "tel:" + viewCompanionViewModel.telephone))
+                            startActivity(intent)
+                        }
 
-            override fun onPermissionDenied(response: PermissionDeniedResponse) {/* ... */
-            }
+                        override fun onPermissionDenied(
+                            response: PermissionDeniedResponse
+                        ) {/* ... */}
 
-            override fun onPermissionRationaleShouldBeShown(
-              permission: PermissionRequest,
-              token: PermissionToken
-            ) {/* ... */
-              token.continuePermissionRequest()
-            }
+                        // 2
+                        override fun onPermissionRationaleShouldBeShown(
+                            permission: PermissionRequest,
+                            token: PermissionToken
+                        ) {/* ... */
+                            token.continuePermissionRequest()
+                        }
 
-          })
-        .onSameThread()
-        .check()
-
+                    }
+                )
+                .onSameThread()
+                .check()
+        }
     }
-  }
 }
