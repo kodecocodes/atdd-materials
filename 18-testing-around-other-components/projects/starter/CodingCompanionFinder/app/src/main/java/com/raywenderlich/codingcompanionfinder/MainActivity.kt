@@ -108,8 +108,8 @@ class MainActivity : AppCompatActivity() {
   companion object {
     val PETFINDER_URI = "petfinder_uri"
     val PETFINDER_KEY = "petfinder_key"
-    val API_KEY = "cw8aUgMwA4C2QdPIBVjNbnrcJcZE7iChB2Vf4bIoe2aAOZ4Dlm"
-    val API_SECRET = "k9JN0gqXzQz6tIuCeHO5U1rHk0HVLXwBns1gQcuD"
+    val API_KEY = "your_api_key"
+    val API_SECRET = "your_api_secret"
     val DEFAULT_PETFINDER_URL = "https://api.petfinder.com/v2/"
   }
 }
