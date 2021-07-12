@@ -23,7 +23,6 @@
     <activity
       android:name=".MainActivity"
       android:configChanges="screenSize|smallestScreenSize|orientation|screenLayout"
-      android:windowSoftInputMode="stateHidden|adjustPan"
       android:screenOrientation="portrait">
 
     </activity>

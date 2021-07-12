@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,28 +34,14 @@ import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.textfield.TextInputEditText
 import com.raywenderlich.codingcompanionfinder.MainActivity
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import com.raywenderlich.codingcompanionfinder.R
 import com.raywenderlich.codingcompanionfinder.databinding.FragmentSearchForCompanionBinding
-import com.raywenderlich.codingcompanionfinder.models.Animal
-import com.raywenderlich.codingcompanionfinder.testhooks.IdlingEntity
-import org.greenrobot.eventbus.EventBus
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SearchForCompanionFragment : Fragment() {
@@ -83,22 +69,19 @@ class SearchForCompanionFragment : Fragment() {
   }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
-// 1
     fragmentSearchForCompanionBinding.searchButton.setOnClickListener {
       try {
         val inputMethodManager =
             activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         inputMethodManager!!.hideSoftInputFromWindow(
-            activity?.getCurrentFocus()?.getWindowToken(),
+            activity?.currentFocus?.windowToken,
             0
         )
       } catch (e: Exception) {
         // only happens when the keyboard is already closed
       }
-// 2
       searchForCompanionViewModel.searchForCompanions()
     }
-// 3
     setupSearchForCompanions()
     super.onActivityCreated(savedInstanceState)
   }
@@ -112,11 +95,11 @@ class SearchForCompanionFragment : Fragment() {
           layoutManager = viewManager
           adapter = companionAdapter
         }
-    searchForCompanionViewModel.animals.observe(this,
-        Observer<ArrayList<Animal>?> {
-          companionAdapter.animals = it ?: arrayListOf()
-          companionAdapter.notifyDataSetChanged()
-        })
+    searchForCompanionViewModel.animals.observe(viewLifecycleOwner,
+      {
+        companionAdapter.animals = it ?: arrayListOf()
+        companionAdapter.notifyDataSetChanged()
+      })
   }
 
 }

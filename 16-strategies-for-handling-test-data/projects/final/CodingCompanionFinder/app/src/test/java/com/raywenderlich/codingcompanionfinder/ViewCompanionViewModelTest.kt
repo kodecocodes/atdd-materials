@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,25 +27,49 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.raywenderlich.codingcompanionfinder
 
 import com.raywenderlich.codingcompanionfinder.data.AnimalData.atlantaShihTzuNamedSpike
-import com.raywenderlich.codingcompanionfinder.data.AnimalData.fakerAnimal
+import com.raywenderlich.codingcompanionfinder.data.fakerAnimal
 import com.raywenderlich.codingcompanionfinder.models.Address
 import com.raywenderlich.codingcompanionfinder.models.Animal
 import com.raywenderlich.codingcompanionfinder.models.Breeds
 import com.raywenderlich.codingcompanionfinder.models.Contact
 import com.raywenderlich.codingcompanionfinder.searchforcompanion.ViewCompanionViewModel
-import junit.framework.Assert.assertEquals
 import org.junit.Test
 
+import org.junit.Assert.*
 
 class ViewCompanionViewModelTest {
+  val animal = Animal(
+    22,
+    Contact(
+      phone = "404-867-5309",
+      email = "coding.companion@razware.com",
+      address = Address(
+        "",
+        "",
+        "Atlanta",
+        "GA",
+        "30303",
+        "USA"
+      ) ),
+    "5",
+    "small",
+    arrayListOf(),
+    Breeds("shih tzu", "", false, false),
+    "Spike",
+    "male",
+    "A sweet little guy with spikey teeth!"
+  )
   @Test
   fun populateFromAnimal_sets_the_animals_name_to_the_view_model() {
     val viewCompanionViewModel = ViewCompanionViewModel()
-    viewCompanionViewModel.populateFromAnimal(atlantaShihTzuNamedSpike)
-    assert(viewCompanionViewModel.name.equals(atlantaShihTzuNamedSpike.name))
+    viewCompanionViewModel
+      .populateFromAnimal(atlantaShihTzuNamedSpike)
+    assert(viewCompanionViewModel.name
+      .equals(atlantaShihTzuNamedSpike.name))
   }
 
   @Test

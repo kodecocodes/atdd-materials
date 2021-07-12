@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,11 +42,10 @@ import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 
 class SearchForCompanionViewModel(val petFinderService: PetFinderService): ViewModel() {
-  val noResultsViewVisiblity : MutableLiveData<Int> = MutableLiveData<Int>().apply { INVISIBLE}
+  val noResultsViewVisiblity : MutableLiveData<Int> = MutableLiveData<Int>()
   val companionLocation : MutableLiveData<String> = MutableLiveData()
 
-  // 1
-  val animals: MutableLiveData<ArrayList<Animal>> = MutableLiveData<ArrayList<Animal>>().apply { arrayListOf<Animal>() }
+  val animals: MutableLiveData<ArrayList<Animal>> = MutableLiveData<ArrayList<Animal>>()
   var accessToken: String = ""
 
   fun searchForCompanions() {
@@ -54,13 +53,10 @@ class SearchForCompanionViewModel(val petFinderService: PetFinderService): ViewM
     GlobalScope.launch {
 
       EventBus.getDefault().post(IdlingEntity(1))
-// 2
-      val getAnimalsRequest = petFinderService.getAnimals(
+      val searchForPetResponse = petFinderService.getAnimals(
           accessToken,
           location = companionLocation.value
       )
-
-      val searchForPetResponse = getAnimalsRequest.await()
 
       GlobalScope.launch(Dispatchers.Main) {
         if (searchForPetResponse.isSuccessful) {
@@ -68,15 +64,12 @@ class SearchForCompanionViewModel(val petFinderService: PetFinderService): ViewM
             // 3
             animals.postValue(it.animals)
             if (it.animals.size > 0) {
-// 3
               noResultsViewVisiblity.postValue(INVISIBLE)
             } else {
-// 3
               noResultsViewVisiblity.postValue(View.VISIBLE)
             }
           }
         } else {
-// 3
           noResultsViewVisiblity.postValue(View.VISIBLE)
         }
       }

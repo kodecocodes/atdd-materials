@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,6 @@ import android.os.Bundle
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.raywenderlich.codingcompanionfinder.retrofit.AuthorizationInterceptor
 import com.raywenderlich.codingcompanionfinder.retrofit.PetFinderService
 import com.raywenderlich.codingcompanionfinder.testhooks.IdlingEntity
@@ -72,7 +71,6 @@ class MainActivity : AppCompatActivity() {
       petFinderService = Retrofit.Builder()
         .baseUrl(baseUrl)
         .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .client(client)
         .build().create(PetFinderService::class.java)
     }

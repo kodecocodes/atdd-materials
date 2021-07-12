@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.raywenderlich.codingcompanionfinder
 
 import com.raywenderlich.codingcompanionfinder.models.Address
@@ -36,9 +37,9 @@ import com.raywenderlich.codingcompanionfinder.models.Contact
 import com.raywenderlich.codingcompanionfinder.searchforcompanion.ViewCompanionViewModel
 import org.junit.Test
 
+import org.junit.Assert.*
 
 class ViewCompanionViewModelTest {
-  // 1
   val animal = Animal(
     22,
     Contact(
@@ -60,12 +61,10 @@ class ViewCompanionViewModelTest {
     "male",
     "A sweet little guy with spikey teeth!"
   )
-  //2
   @Test
   fun populateFromAnimal_sets_the_animals_name_to_the_view_model(){
     val viewCompanionViewModel = ViewCompanionViewModel()
     viewCompanionViewModel.populateFromAnimal(animal)
-// 3
     assert(viewCompanionViewModel.name.equals("Spike"))
   }
 }

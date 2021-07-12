@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,38 +34,36 @@ import com.raywenderlich.codingcompanionfinder.MainActivity
 import com.raywenderlich.codingcompanionfinder.models.Token
 import okhttp3.Interceptor
 import okhttp3.Response
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import java.io.IOException
 
+// 1
 class AuthorizationInterceptor : Interceptor, KoinComponent {
+  // 2
   private val petFinderService: PetFinderService by inject()
   private var token = Token()
   @Throws(IOException::class)
-  // 1
   override fun intercept(chain: Interceptor.Chain): Response {
     var mainResponse = chain.proceed(chain.request())
     val mainRequest = chain.request()
-    // 2
     if ((mainResponse.code() == 401 || mainResponse.code() == 403) && !
       mainResponse.request().url().url().toString().contains("oauth2/token")) {
-      // 3
+// 3
       val tokenRequest = petFinderService.getToken(clientId =
       MainActivity.API_KEY, clientSecret = MainActivity.API_SECRET)
       val tokenResponse = tokenRequest.execute()
       if (tokenResponse.isSuccessful) {
-        // 4
         tokenResponse.body()?.let {
           token = it
-          // 5
           val builder =
             mainRequest.newBuilder().header("Authorization", "Bearer " +
                 it.accessToken)
               .method(mainRequest.method(), mainRequest.body())
+          mainResponse.close()
           mainResponse = chain.proceed(builder.build())
         } }
     }
-    // 6
     return mainResponse
   }
 }
