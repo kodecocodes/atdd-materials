@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,55 +27,56 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.raywenderlich.codingcompanionfinder
 
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.RecordedRequest
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
+import com.raywenderlich.codingcompanionfinder.data.AnimalData.atlantaShihTzuNamedSpike
+import com.raywenderlich.codingcompanionfinder.data.fakerAnimal
+import com.raywenderlich.codingcompanionfinder.models.Address
+import com.raywenderlich.codingcompanionfinder.models.Animal
+import com.raywenderlich.codingcompanionfinder.models.Breeds
+import com.raywenderlich.codingcompanionfinder.models.Contact
+import com.raywenderlich.codingcompanionfinder.searchforcompanion.ViewCompanionViewModel
+import org.junit.Test
 
-object CommonTestDataUtil {
+import org.junit.Assert.*
 
-  fun dispatch(request: RecordedRequest): MockResponse? {
-    return when (request.path) {
-      "/animals?limit=20&location=30318" -> {
-        MockResponse().setResponseCode(200).setBody(
-            readFile("search_30318.json")
-        )
-      }
-      "/animals?limit=20&location=90210" -> {
-        MockResponse().setResponseCode(200).setBody("{\"animals\": []}")
-      }
-      else -> {
-        MockResponse().setResponseCode(404).setBody("{}")
-      }
-    }
+class ViewCompanionViewModelTest {
+  val animal = Animal(
+    22,
+    Contact(
+      phone = "404-867-5309",
+      email = "coding.companion@razware.com",
+      address = Address(
+        "",
+        "",
+        "Atlanta",
+        "GA",
+        "30303",
+        "USA"
+      ) ),
+    "5",
+    "small",
+    arrayListOf(),
+    Breeds("shih tzu", "", false, false),
+    "Spike",
+    "male",
+    "A sweet little guy with spikey teeth!"
+  )
+  @Test
+  fun populateFromAnimal_sets_the_animals_name_to_the_view_model() {
+    val viewCompanionViewModel = ViewCompanionViewModel()
+    viewCompanionViewModel
+      .populateFromAnimal(atlantaShihTzuNamedSpike)
+    assert(viewCompanionViewModel.name
+      .equals(atlantaShihTzuNamedSpike.name))
   }
 
-  @Throws(IOException::class)
-  private fun readFile(jsonFileName: String): String {
-    val inputStream = this::class.java.getResourceAsStream("/assets/$jsonFileName")
-        ?: throw NullPointerException(
-            "Have you added the local resource correctly?, "
-                + "Hint: name it as: " + jsonFileName
-        )
-    val stringBuilder = StringBuilder()
-    var inputStreamReader: InputStreamReader? = null
-    try {
-      inputStreamReader = InputStreamReader(inputStream)
-      val bufferedReader = BufferedReader(inputStreamReader)
-      var character: Int = bufferedReader.read()
-      while (character != -1) {
-        stringBuilder.append(character.toChar())
-        character = bufferedReader.read()
-      }
-    } catch (exception: IOException) {
-      exception.printStackTrace()
-    } finally {
-      inputStream.close()
-      inputStreamReader?.close()
-    }
-    return stringBuilder.toString()
+  @Test
+  fun populateFromAnimal_sets_the_animals_description_to_the_view_model(){
+    val viewCompanionViewModel = ViewCompanionViewModel()
+    System.out.println(fakerAnimal.toString())
+    viewCompanionViewModel.populateFromAnimal(fakerAnimal)
+    assertEquals(fakerAnimal.description, viewCompanionViewModel.description)
   }
 }

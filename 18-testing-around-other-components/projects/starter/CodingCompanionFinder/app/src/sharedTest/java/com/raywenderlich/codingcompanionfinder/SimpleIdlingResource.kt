@@ -6,12 +6,10 @@ import java.util.concurrent.atomic.AtomicInteger
 
 class SimpleIdlingResource : IdlingResource {
 
-  // 1
   @Nullable
   @Volatile
   private var callback: IdlingResource.ResourceCallback? = null
 
-  // 2
   // Idleness is controlled with this boolean.
   var activeResources = AtomicInteger(0)
 
@@ -19,7 +17,6 @@ class SimpleIdlingResource : IdlingResource {
     return this.javaClass.name
   }
 
-  // 3
   override fun isIdleNow(): Boolean {
     return activeResources.toInt() < 1
   }
@@ -28,7 +25,6 @@ class SimpleIdlingResource : IdlingResource {
     this.callback = callback
   }
 
-  // 4
   fun incrementBy(incrementValue: Int) {
     if (activeResources.addAndGet(incrementValue) < 1 && callback != null) {
       callback!!.onTransitionToIdle()

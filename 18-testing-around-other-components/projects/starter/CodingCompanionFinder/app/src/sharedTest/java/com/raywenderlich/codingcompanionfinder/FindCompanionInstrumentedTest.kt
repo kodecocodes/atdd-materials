@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Razeware LLC
+ * Copyright (c) 2021 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,14 +47,22 @@ import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
-import org.junit.*
+import org.junit.After
 
+import org.junit.Test
+import org.junit.Rule
 import org.junit.runner.RunWith
 
-import org.koin.dsl.module.module
-import org.koin.standalone.StandAloneContext.loadKoinModules
-import org.koin.standalone.StandAloneContext.stopKoin
+import org.junit.Before
+import org.junit.BeforeClass
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
+import org.koin.test.AutoCloseKoinTest
 import org.koin.test.KoinTest
+import org.robolectric.annotation.LooperMode
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -62,16 +70,15 @@ import org.koin.test.KoinTest
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @RunWith(AndroidJUnit4::class)
-class FindCompanionInstrumentedTest: KoinTest {
+@LooperMode(LooperMode.Mode.PAUSED)
+class FindCompanionInstrumentedTest: AutoCloseKoinTest() {
 
   lateinit var testScenario: ActivityScenario<MainActivity>
 
   private val idlingResource = SimpleIdlingResource()
 
   companion object {
-    // 1
     val server = MockWebServer()
-    // 2
     val dispatcher: Dispatcher = object : Dispatcher() {
       @Throws(InterruptedException::class)
       override fun dispatch(request: RecordedRequest): MockResponse {
@@ -86,20 +93,17 @@ class FindCompanionInstrumentedTest: KoinTest {
     @BeforeClass
     @JvmStatic
     fun setup() {
-// 3
       server.setDispatcher(dispatcher)
       server.start()
-// 3
-      startIntent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
-      startIntent.putExtra(MainActivity.PETFINDER_URI,
-          server.url("").toString())
     }
   }
 
   private fun loadKoinTestModules() {
-    loadKoinModules(module(override = true) {
-      single<String>(name = PETFINDER_URL){server.url("").toString()}
-    }, appModule)
+    stopKoin()
+    startKoin {  }
+    loadKoinModules(listOf(module(override = true) {
+      single(named(PETFINDER_URL)){server.url("").toString()}
+    }, appModule))
   }
 
   @Subscribe
@@ -109,9 +113,9 @@ class FindCompanionInstrumentedTest: KoinTest {
 
   @Before
   fun beforeTestsRun() {
-    testScenario = ActivityScenario.launch(startIntent)
-    stopKoin()
     loadKoinTestModules()
+    testScenario = ActivityScenario.launch(MainActivity::class.java)
+
     EventBus.getDefault().register(this)
     IdlingRegistry.getInstance().register(idlingResource)
   }
@@ -121,7 +125,6 @@ class FindCompanionInstrumentedTest: KoinTest {
     // eventbus and idling resources unregister.
     IdlingRegistry.getInstance().unregister(idlingResource)
     EventBus.getDefault().unregister(this)
-    stopKoin()
     testScenario.close()
   }
 
